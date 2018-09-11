@@ -2,7 +2,7 @@
 
 ## Overview
 
-Periodic tasks are defined at Python level and managed by `cron` app.
+Django app to define and manage periodic tasks at Python level.
 
 ## Define a new cron job
 
@@ -10,7 +10,7 @@ Cron job definition is inspired by Django Admin configuration. To add a new job,
 file inside an app, create `BaseCronJob` subclass inside and register it:
 
 ```python
-from cron.job import BaseCronJob, cron_job_registry
+from cronman.job import BaseCronJob, cron_job_registry
 
 class HelloWorld(BaseCronJob):
     """Demo Cron Job class"""
@@ -94,7 +94,7 @@ Quoted string with spaces are supported, but comma can be used only as argument 
 ```
 python manage.py cron_worker run HelloWorld:"big world",sleep=5
 ```
-There are utility functions for extracting lists and boolean values in `cron.utils` module.
+There are utility functions for extracting lists and boolean values in `cronman.utils` module.
 
 ## Configure Cronitor support
 
@@ -119,7 +119,7 @@ When adding a new monitor in Cronitor dashboard, please use type **heartbeat**. 
 Tasks can acquire locks to prevent concurrent calls. Locks have form of PIDfiles located in `settings.CRON_DATA_DIR`. To modify lock behavior for given cron job class you can set `lock_type` attribute:
 
 ```python
-from cron.taxonomies import LockType
+from cronman.taxonomies import LockType
 
 class HelloWorld(BaseCronJob):
     """Demo Cron Job class"""
@@ -134,7 +134,7 @@ Locks acquired/released by `cron_worker` command.
 We can configure a shared lock for several cron job classes to make sure only one of them is running:
 
 ```python
-from cron.taxonomies import LockType
+from cronman.taxonomies import LockType
 
 class HelloWorld1(BaseCronJob):
     """Demo Cron Job class (1)"""
@@ -151,13 +151,13 @@ class HelloWorld2(BaseCronJob):
 
 We can assign CPU priority (`nice`) to a cron job class by using `worker_cpu_priority` attribute:
 ```python
-from cron.taxonomies import CPUPriority
+from cronman.taxonomies import CPUPriority
 
 class NiceHellowWorld(BaseCronJob):
     """Hello World running through `nice -n 19`"""
     worker_cpu_priority = CPUPriority.LOWEST
 ```
-We can also customize IO priority (`ionice`) by assigning one of values from `cron.taxonomies.IOPriority` to `worker_io_priority` attribute, but this is not necessary in most cases, as `nice` changes IO priority as well.
+We can also customize IO priority (`ionice`) by assigning one of values from `cronman.taxonomies.IOPriority` to `worker_io_priority` attribute, but this is not necessary in most cases, as `nice` changes IO priority as well.
 
 Commands `cron_scheduler run`, `cron_worker resume`, and cron job `RunCronTasks` will spawn worker processes with respect to CPU and IO priorities assigned to cron job classes. These settings **are not** enforced when running `cron_worker run` so you have to prepend `nice`/`ionice` to such calls manually.
 
