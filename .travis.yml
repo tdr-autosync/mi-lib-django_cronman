@@ -1,0 +1,21 @@
+language: python
+dist: trusty
+sudo: false
+notifications:
+  email: false
+branches:
+  only:
+    - master
+cache:
+  pip: true
+python:
+  - "2.7"
+  - "3.6"
+install:
+  - pip install -U pip
+  - pip install -e .
+  - pip install coverage
+script:
+  - set -e
+  - coverage run --source=cronman/ setup.py test
+  - coverage report
