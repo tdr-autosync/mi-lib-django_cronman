@@ -96,7 +96,15 @@ setup(
     ],
     include_package_data=True,
     tests_require=["mock"],
-    cmdclass={
-        "test": TestCommand,
-    },
+    cmdclass={"test": TestCommand},
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 2",
+        "License :: OSI Approved :: BSD License",
+        "Framework :: Django",
+        "Framework :: Django :: 1.9",
+        "Environment :: Web Environment",
+        "Operating System :: POSIX",
+        "Topic :: Utilities",
+    ],
 )
