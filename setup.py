@@ -81,7 +81,7 @@ setup(
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
     url="https://github.com/unhaggle/django-cronman",
-    author="Motoinsight",
+    author="Unhaggle Inc.",
     author_email="",
     packages=find_packages(),
     install_requires=[
