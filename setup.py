@@ -90,12 +90,11 @@ setup(
         "geopy < 1.1",
         "python-dateutil < 2.7",
         "raven < 5.33",
-        "redis < 2.11",
         "requests >= 2.1",
         "typing",
     ],
     include_package_data=True,
-    tests_require=["mock"],
+    tests_require=["mock", "redis < 2.11"],
     cmdclass={
         "test": TestCommand,
     },
