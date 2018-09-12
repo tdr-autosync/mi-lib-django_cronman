@@ -9,7 +9,7 @@ from django.core.management import CommandError
 
 
 class MissingDependency(ImportError):
-    """Exception raised when missing optional dependecy is accessed."""
+    """Exception raised when missing optional dependency is accessed."""
 
 
 # CronJobRegistry errors:
