@@ -67,7 +67,7 @@ CRON_RAVEN_CMD = None
 RAVEN_CONFIG = {"dsn": ""}
 # Redis configuration:
 # NOTE: Redis connections are mocked for tests.
-REDIS_HOSTNAME = "127.0.0.1"
-REDIS_PORT = 6379
-REDIS_DB_ID = 0
-REDIS_USE_CLUSTER = False
+# CRONMAN_REDIS_HOST = "127.0.0.1"
+# CRONMAN_REDIS_PORT = 6379
+# CRONMAN_REDIS_DB = 0
+# CRONMAN_REDIS_CONSTRUCTOR = "cronman.redis_client.get_strict_redis_default"

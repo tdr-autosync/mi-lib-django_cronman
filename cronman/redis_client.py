@@ -33,8 +33,8 @@ def get_strict_redis_default(host=None, port=None, db=None):
             "CronRemoteManager requires redis < 2.11 to work."
         )
 
-    host = host or settings.REDIS_HOSTNAME
-    port = port or settings.REDIS_PORT
-    db = db if db is not None else settings.REDIS_DB_ID
-    client = StrictRedis(host=host, port=port, db=db)
-    return client
+    host = host or getattr(settings, "CRONMAN_REDIS_HOST", "127.0.0.1")
+    port = port or getattr(settings, "CRONMAN_REDIS_PORT", 6379)
+    db = db if db is not None else getattr(settings, "CRONMAN_REDIS_DB", 0)
+
+    return StrictRedis(host=host, port=port, db=db)

@@ -14,8 +14,10 @@ from cronman.scheduler import CronScheduler
 class Command(BaseCommand):
     help = (
         "Cron Manager: CLI to control remote Cron Schedulers via Redis.\n"
-        "The following settings have to match on local and remote machines:\n"
-        "REDIS_HOSTNAME, REDIS_PORT, REDIS_DB_ID."
+        "Redis access configuration have to be the same on local and remote "
+        "machines.\n"
+        "With default configuration, the following settings have to match:\n"
+        "CRONMAN_REDIS_HOST, CRONMAN_REDIS_PORT, CRONMAN_REDIS_DB.\n"
     )
 
     ALLOWED_METHODS = (
