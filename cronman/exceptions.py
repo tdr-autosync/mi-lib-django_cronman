@@ -5,6 +5,13 @@ from __future__ import unicode_literals
 
 from django.core.management import CommandError
 
+# General errors:
+
+
+class MissingDependency(ImportError):
+    """Exception raised when missing optional dependecy is accessed."""
+
+
 # CronJobRegistry errors:
 
 
