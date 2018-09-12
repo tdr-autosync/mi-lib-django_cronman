@@ -30,7 +30,7 @@ def get_strict_redis_default(host=None, port=None, db=None):
     except ImportError:
         raise MissingDependency(
             "Unable to import redis. "
-            "CronRemoteManager requires redis < 2.11 to work."
+            "CronRemoteManager requires this dependency."
         )
 
     host = host or getattr(settings, "CRONMAN_REDIS_HOST", "127.0.0.1")

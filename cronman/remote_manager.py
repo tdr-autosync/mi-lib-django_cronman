@@ -51,7 +51,7 @@ class CronRemoteManager(BaseCronObject):
             except ImportError:
                 raise MissingDependency(
                     "Unable to import redis. "
-                    "CronRemoteManager requires redis < 2.11 to work."
+                    "CronRemoteManager requires this dependency."
                 )
             try:
                 method = getattr(self.redis_client, method_name)
