@@ -15,8 +15,9 @@ def get_strict_redis(host=None, port=None, db=None):
     """
     _get_strict_redis = import_string(
         getattr(
-            settings, "CRONMAN_REDIS_CONSTRUCTOR",
-            "cronman.redis_client.get_strict_redis_default"
+            settings,
+            "CRONMAN_REDIS_CONSTRUCTOR",
+            "cronman.redis_client.get_strict_redis_default",
         )
     )
     return _get_strict_redis(host=host, port=port, db=db)

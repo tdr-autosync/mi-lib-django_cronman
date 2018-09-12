@@ -14,6 +14,7 @@ from django.utils.six.moves import range
 import redis
 
 from cronman.base import BaseCronObject
+from cronman.exceptions import MissingDependency
 from cronman.redis_client import get_strict_redis
 from cronman.taxonomies import CronSchedulerStatus
 from cronman.utils import bool_param, config
@@ -46,9 +47,16 @@ class CronRemoteManager(BaseCronObject):
         """Wrapper over Redis client method call"""
         if self.enabled:
             try:
+                from redis import ConnectionError
+            except ImportError:
+                raise MissingDependency(
+                    "Unable to import redis. "
+                    "CronRemoteManager requires redis < 2.11 to work."
+                )
+            try:
                 method = getattr(self.redis_client, method_name)
                 result = method(*args)
-            except redis.ConnectionError as error:
+            except ConnectionError as error:
                 self.logger.warning(
                     "Remote Manager: {} FAILED: {}".format(description, error)
                 )
