@@ -3,17 +3,15 @@
 
 from __future__ import unicode_literals
 
-from django.conf import settings
 from django.contrib import admin
 from django.utils.module_loading import import_string
 
+from cronman.config import app_settings
 from cronman.forms import CronTaskAdminForm
 from cronman.models import CronTask
 
 
-admin_site_path = getattr(
-    settings, "CRONMAN_ADMIN_SITE", "django.contrib.admin.site"
-)
+admin_site_path = app_settings.CRONMAN_ADMIN_SITE
 
 admin_site = import_string(admin_site_path) if admin_site_path else None
 

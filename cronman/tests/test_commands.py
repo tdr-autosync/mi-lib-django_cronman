@@ -6,12 +6,12 @@ from __future__ import unicode_literals
 import os
 import socket
 
-from django.conf import settings
 from django.core.management import CommandError, call_command
 
 import mock
 import redis
 
+from cronman.config import app_settings
 from cronman.scheduler import CronScheduler
 from cronman.taxonomies import CronSchedulerStatus
 from cronman.tests.base import (
@@ -523,7 +523,7 @@ class WorkerCommandTestCase(BaseCronTestCase):
                 )
         # PIDFile should handle IOError (missing file) correctly:
         self.assertIsNone(
-            CronWorkerPIDFile(settings.CRONMAN_DATA_DIR, "Fake").pid
+            CronWorkerPIDFile(app_settings.CRONMAN_DATA_DIR, "Fake").pid
         )
         # ProcessManager should handle missing PID
         # (due to truncated/missing file) correctly:

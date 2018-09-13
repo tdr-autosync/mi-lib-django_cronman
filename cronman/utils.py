@@ -13,7 +13,6 @@ import subprocess
 import sys
 from importlib import import_module
 
-from django.conf import settings
 from django.utils.encoding import force_text
 from django.utils.functional import cached_property
 from django.utils.six import text_type
@@ -22,6 +21,8 @@ from django.utils.six import text_type
 from django.utils.six.moves import range
 
 from dateutil.parser import parse as dateutil_parse
+
+from cronman.config import app_settings
 
 MYPY = False
 if MYPY:
@@ -48,10 +49,10 @@ def format_exception(exception=None):
 
 
 def config(name):
-    """Retrieves config value from environment or settings"""
+    """Retrieves config value from environment or app settings"""
     value = os.environ.get(name)
     if value is None:
-        value = getattr(settings, name, None)
+        value = getattr(app_settings, name)
     return value
 
 

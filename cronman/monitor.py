@@ -7,6 +7,7 @@ import contextlib
 import logging
 
 from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
 from django.utils.functional import cached_property
 from django.utils.html import strip_tags
 from django.utils.http import urlencode
@@ -14,6 +15,7 @@ from django.utils.six.moves import html_parser as HTMLParser
 
 import requests
 
+from cronman.config import app_settings
 from cronman.exceptions import MissingDependency
 from cronman.utils import bool_param, chunks, config, format_exception
 
@@ -36,7 +38,7 @@ def get_raven_client():
         if client_config is not None:
             break
     else:
-        client_config = {"dsn": ""}
+        client_config = app_settings.CRONMAN_SENTRY_CONFIG
 
     return raven.Client(**client_config)
 
@@ -47,7 +49,7 @@ class Cronitor(object):
     def __init__(self):
         self.logger = logger
         self.enabled = bool_param(config("CRONMAN_CRONITOR_ENABLED"))
-        self.url = settings.CRONMAN_CRONITOR_URL
+        self.url = app_settings.CRONMAN_CRONITOR_URL
 
     def run(self, cronitor_id, msg=None):
         """Pings Cronitor when job started"""
@@ -88,7 +90,7 @@ class Sentry(object):
     def __init__(self):
         self.logger = logger
         self.enabled = bool_param(config("CRONMAN_SENTRY_ENABLED"))
-        self.raven_cmd = getattr(settings, "CRONMAN_RAVEN_CMD", None)
+        self.raven_cmd = app_settings.CRONMAN_RAVEN_CMD
 
     @cached_property
     def raven_client(self):
@@ -141,9 +143,9 @@ class Slack(object):
     def __init__(self):
         self.logger = logger
         self.enabled = bool_param(config("CRONMAN_SLACK_ENABLED"))
-        self.url = settings.CRONMAN_SLACK_URL
-        self.token = settings.CRONMAN_SLACK_TOKEN
-        self.default_channel = settings.CRONMAN_SLACK_DEFAULT_CHANNEL
+        self.url = app_settings.CRONMAN_SLACK_URL
+        self.token = app_settings.CRONMAN_SLACK_TOKEN
+        self.default_channel = app_settings.CRONMAN_SLACK_DEFAULT_CHANNEL
 
     def _prepare_message(self, message):
         # slack don't process html entities
@@ -160,6 +162,12 @@ class Slack(object):
                 "Slack request ignored (disabled in settings)."
             )
             return
+        if not (self.url and self.token):
+            raise ImproperlyConfigured(
+                "CRONMAN_SLACK_URL and CRONMAN_SLACK_TOKEN are required by "
+                "Slack integration. Please provide values for these settings "
+                "or disable Slack integration (CRONMAN_SLACK_ENABLED = False)."
+            )
         channel_url = "{}?{}".format(
             self.url,
             urlencode(

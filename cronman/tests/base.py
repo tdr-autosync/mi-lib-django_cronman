@@ -9,18 +9,18 @@ import os
 import shutil
 import signal
 
-from django.conf import settings
 from django.test.testcases import TestCase
 from django.test.utils import override_settings
 from django.utils.encoding import force_bytes
 
 import mock
 
+from cronman.config import app_settings
 from cronman.worker import CronWorker
 
 
 TEMP_FILE = "/tmp/sleep.txt"
-TEST_CRONMAN_DATA_DIR = os.path.join(settings.CRONMAN_DATA_DIR, "test")
+TEST_CRONMAN_DATA_DIR = os.path.join(app_settings.CRONMAN_DATA_DIR, "test")
 
 
 def override_cron_settings(**kwargs):

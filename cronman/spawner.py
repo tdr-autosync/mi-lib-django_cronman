@@ -8,9 +8,8 @@ import os
 import sys
 import time
 
-from django.conf import settings
-
 from cronman.base import BaseCronObject
+from cronman.config import app_settings
 from cronman.job import cron_job_registry
 from cronman.utils import bool_param, config, parse_job_spec, spawn
 
@@ -62,23 +61,23 @@ class CronSpawner(BaseCronObject):
         """
         cron_job_class = cron_job_registry.get(parse_job_spec(job_spec)[0])
         if (
-            settings.CRONMAN_NICE_CMD
+            app_settings.CRONMAN_NICE_CMD
             and cron_job_class.worker_cpu_priority is not None
         ):
             cpu_priority_args = [
-                settings.CRONMAN_NICE_CMD,
+                app_settings.CRONMAN_NICE_CMD,
                 "-n",
                 str(cron_job_class.worker_cpu_priority),
             ]
         else:
             cpu_priority_args = []
         if (
-            settings.CRONMAN_IONICE_CMD
+            app_settings.CRONMAN_IONICE_CMD
             and cron_job_class.worker_io_priority is not None
         ):
             io_class, io_class_data = cron_job_class.worker_io_priority
             io_priority_args = [
-                settings.CRONMAN_IONICE_CMD,
+                app_settings.CRONMAN_IONICE_CMD,
                 "-c",
                 str(io_class),
             ]
