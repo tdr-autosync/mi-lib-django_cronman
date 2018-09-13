@@ -34,7 +34,7 @@ class CronRemoteManager(BaseCronObject):
         kwargs["logger"] = kwargs.get("logger", logger)
         super(CronRemoteManager, self).__init__(**kwargs)
         self.host_name = host_name or socket.gethostname()
-        self.enabled = bool_param(config("CRON_REMOTE_MANAGER_ENABLED"))
+        self.enabled = bool_param(config("CRONMAN_REMOTE_MANAGER_ENABLED"))
 
     # Redis operations:
 

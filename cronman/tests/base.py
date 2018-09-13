@@ -34,7 +34,7 @@ def override_cron_settings(**kwargs):
         "CRON_RAVEN_CMD": None,
         "CRONMAN_NICE_CMD": "nice",
         "CRONMAN_IONICE_CMD": "ionice",
-        "CRON_REMOTE_MANAGER_ENABLED": False,
+        "CRONMAN_REMOTE_MANAGER_ENABLED": False,
     }
     defaults.update(kwargs)
     return override_settings(**defaults)
