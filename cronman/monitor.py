@@ -3,9 +3,11 @@
 
 from __future__ import unicode_literals
 
+import contextlib
 import logging
 
 from django.conf import settings
+from django.utils.functional import cached_property
 from django.utils.html import strip_tags
 from django.utils.http import urlencode
 from django.utils.six.moves import html_parser as HTMLParser
@@ -84,16 +86,40 @@ class Sentry(object):
     """Wrapper over Sentry API"""
 
     def __init__(self):
-        self.raven_client = get_raven_client()
-        self.raven_cmd = settings.CRONMAN_RAVEN_CMD
+        self.logger = logger
+        self.enabled = bool_param(config("CRONMAN_SENTRY_ENABLED"))
+        self.raven_cmd = getattr(settings, "CRONMAN_RAVEN_CMD", None)
 
-    @property
+    @cached_property
+    def raven_client(self):
+        return get_raven_client()
+
     def capture_exceptions(self):
-        return self.raven_client.capture_exceptions
+        if self.enabled:
+            context_manager = self.raven_client.capture_exceptions
+        else:
+            context_manager = self._get_capture_exceptions_noop()
+        return context_manager()
 
-    @property
     def capture_exception(self):
-        return self.raven_client.captureException
+        if self.enabled:
+            self.raven_client.captureException()
+        else:
+            self._capture_exception_noop()
+
+    def _capture_exception_noop(self):
+        self.logger.debug("Sentry request ignored (disabled in settings).")
+
+    def _get_capture_exceptions_noop(self):
+        @contextlib.contextmanager
+        def _capture_exceptions_noop():
+            try:
+                yield
+            except Exception:
+                self._capture_exception_noop()
+                raise
+
+        return _capture_exceptions_noop
 
 
 def send_errors_to_sentry(method):

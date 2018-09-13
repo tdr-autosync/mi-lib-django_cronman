@@ -50,6 +50,9 @@ class CronSpawner(BaseCronObject):
         environ["CRONMAN_SLACK_ENABLED"] = str(
             int(bool_param(config("CRONMAN_SLACK_ENABLED"), default=False))
         )
+        environ["CRONMAN_SENTRY_ENABLED"] = str(
+            int(bool_param(config("CRONMAN_SENTRY_ENABLED"), default=False))
+        )
         environ.update(self.extra_env)
         return environ
 

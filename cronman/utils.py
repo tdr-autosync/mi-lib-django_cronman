@@ -51,7 +51,7 @@ def config(name):
     """Retrieves config value from environment or settings"""
     value = os.environ.get(name)
     if value is None:
-        value = getattr(settings, name)
+        value = getattr(settings, name, None)
     return value
 
 
