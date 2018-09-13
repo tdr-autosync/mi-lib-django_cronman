@@ -62,10 +62,10 @@ CRONMAN_SLACK_DEFAULT_CHANNEL = "cron"
 # Cronitor settings:
 CRONMAN_CRONITOR_ENABLED = False
 CRONMAN_CRONITOR_URL = "https://cronitor.link/{cronitor_id}/{end_point}"
-# Absolute path to raven-cmd script
+# Absolute path to raven-cmd script (Sentry wrapper):
 CRONMAN_RAVEN_CMD = None
 # Sentry configuration:
-RAVEN_CONFIG = {"dsn": ""}
+# CRONMAN_SENTRY_CONFIG = {"dsn": ""}
 # Redis configuration:
 # NOTE: Redis connections are mocked for tests.
 # CRONMAN_REDIS_HOST = "127.0.0.1"

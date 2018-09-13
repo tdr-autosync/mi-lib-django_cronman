@@ -10,9 +10,9 @@ from django.utils.html import strip_tags
 from django.utils.http import urlencode
 from django.utils.six.moves import html_parser as HTMLParser
 
-import raven
 import requests
 
+from cronman.exceptions import MissingDependency
 from cronman.utils import bool_param, chunks, config, format_exception
 
 logger = logging.getLogger("cronman.command")
@@ -22,7 +22,21 @@ def get_raven_client():
     """Creates raven.Client instance configured to work with cron jobs."""
     # NOTE: this function uses settings and therefore it shouldn't be called
     #       at module level.
-    return raven.Client(**settings.RAVEN_CONFIG)
+    try:
+        import raven
+    except ImportError:
+        raise MissingDependency(
+            "Unable to import raven. Sentry monitor requires this dependency."
+        )
+
+    for setting in ("CRONMAN_SENTRY_CONFIG", "SENTRY_CONFIG", "RAVEN_CONFIG"):
+        client_config = getattr(settings, setting, None)
+        if client_config is not None:
+            break
+    else:
+        client_config = {"dsn": ""}
+
+    return raven.Client(**client_config)
 
 
 class Cronitor(object):
