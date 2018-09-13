@@ -114,7 +114,7 @@ There are utility functions for extracting lists and boolean values in `cronman.
 
 `cron_worker` command can notify Cronitor when a job is started, finished or it has failed.
 To enable this you have to:
-1. Enable Cronitor support in settings `CRONITOR_ENABLED = True`
+1. Enable Cronitor support in settings `CRONMAN_CRONITOR_ENABLED = True`
 2. Configure you cron job class:
 ```python
 class HelloWorld(BaseCronJob):

@@ -30,8 +30,8 @@ class Cronitor(object):
 
     def __init__(self):
         self.logger = logger
-        self.enabled = bool_param(config("CRONITOR_ENABLED"))
-        self.url = settings.CRONITOR_URL
+        self.enabled = bool_param(config("CRONMAN_CRONITOR_ENABLED"))
+        self.url = settings.CRONMAN_CRONITOR_URL
 
     def run(self, cronitor_id, msg=None):
         """Pings Cronitor when job started"""

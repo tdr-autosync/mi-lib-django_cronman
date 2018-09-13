@@ -60,8 +60,8 @@ CRONMAN_SLACK_URL = "https://fake-chat.slack.com/services/hooks/slackbot"
 CRONMAN_SLACK_TOKEN = "test-slack-token"
 CRONMAN_SLACK_DEFAULT_CHANNEL = "cron"
 # Cronitor settings:
-CRONITOR_ENABLED = False
-CRONITOR_URL = "https://cronitor.link/{cronitor_id}/{end_point}"
+CRONMAN_CRONITOR_ENABLED = False
+CRONMAN_CRONITOR_URL = "https://cronitor.link/{cronitor_id}/{end_point}"
 # Absolute path to raven-cmd script
 CRON_RAVEN_CMD = None
 # Sentry configuration:

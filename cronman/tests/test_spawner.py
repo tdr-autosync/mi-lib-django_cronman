@@ -29,7 +29,7 @@ class CronSpawnerTestCase(BaseCronTestCase):
         self.assertDictContainsSubset(
             {
                 "CRONMAN_DATA_DIR": TEST_CRONMAN_DATA_DIR,
-                "CRONITOR_ENABLED": "0",
+                "CRONMAN_CRONITOR_ENABLED": "0",
             },
             CronSpawner().get_worker_env(),
         )

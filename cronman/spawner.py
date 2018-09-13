@@ -43,9 +43,9 @@ class CronSpawner(BaseCronObject):
         )
         environ["CRONMAN_NICE_CMD"] = str(config("CRONMAN_NICE_CMD") or "")
         environ["CRONMAN_IONICE_CMD"] = str(config("CRONMAN_IONICE_CMD") or "")
-        environ["CRONITOR_URL"] = str(config("CRONITOR_URL"))
-        environ["CRONITOR_ENABLED"] = str(
-            int(bool_param(config("CRONITOR_ENABLED"), default=False))
+        environ["CRONMAN_CRONITOR_URL"] = str(config("CRONMAN_CRONITOR_URL"))
+        environ["CRONMAN_CRONITOR_ENABLED"] = str(
+            int(bool_param(config("CRONMAN_CRONITOR_ENABLED"), default=False))
         )
         environ["CRONMAN_SLACK_ENABLED"] = str(
             int(bool_param(config("CRONMAN_SLACK_ENABLED"), default=False))

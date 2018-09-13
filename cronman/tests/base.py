@@ -29,7 +29,7 @@ def override_cron_settings(**kwargs):
         "CRONMAN_DATA_DIR": TEST_CRONMAN_DATA_DIR,
         "CRONMAN_DEBUG": True,
         "CRONMAN_JOBS_MODULE": "cronman.tests.cron_jobs",
-        "CRONITOR_ENABLED": False,
+        "CRONMAN_CRONITOR_ENABLED": False,
         "CRONMAN_SLACK_ENABLED": False,
         "CRON_RAVEN_CMD": None,
         "CRONMAN_NICE_CMD": "nice",
@@ -114,10 +114,11 @@ def mock_environ():
 
 def expected_worker_env():
     """Environment dictionary expected to be passed to worker subprocess"""
+    cronitor_url = "https://cronitor.link/{cronitor_id}/{end_point}"
     return {
         "SOME_ENV_VAR": "42",
-        "CRONITOR_ENABLED": "0",
-        "CRONITOR_URL": "https://cronitor.link/{cronitor_id}/{end_point}",
+        "CRONMAN_CRONITOR_ENABLED": "0",
+        "CRONMAN_CRONITOR_URL": cronitor_url,
         "CRONMAN_JOBS_MODULE": "cronman.tests.cron_jobs",
         "CRONMAN_DATA_DIR": TEST_CRONMAN_DATA_DIR,
         "CRONMAN_DEBUG": "1",
