@@ -60,17 +60,17 @@ CRON_JOBS = (
 )
 ```
 
-Set ```CRON_JOBS_MODULE``` to the dotted path name of the module where cron jobs are specified. Remember, this module MUST have a ```CRON_JOBS``` attribute. ```CRON_JOBS_MODULE``` is ```None``` by default. For example:
+Set ```CRONMAN_JOBS_MODULE``` to the dotted path name of the module where cron jobs are specified. Remember, this module MUST have a ```CRON_JOBS``` attribute. ```CRONMAN_JOBS_MODULE``` is ```None``` by default. For example:
 
 ```python
 # settings_local.py
 
-CRON_JOBS_MODULE = 'app.cron_jobs.name'
+CRONMAN_JOBS_MODULE = 'app.cron_jobs.name'
 ```
 
 ## Run the scheduler
 
-Cron jobs defined in ```settings.CRON_JOBS_MODULE``` are started by `cron_scheduler` command from `cron` app.
+Cron jobs defined in ```settings.CRONMAN_JOBS_MODULE``` are started by `cron_scheduler` command from `cron` app.
 This command constructs a list of jobs that should be executed in current period (now +/- 1 minute)
 and creates **a new subprocess** for each job.
 ```

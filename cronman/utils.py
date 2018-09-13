@@ -56,8 +56,8 @@ def config(name):
 
 
 def cron_jobs_module_config(name, default=None):
-    """Retrieves value as attribute of CRON_JOBS_MODULE."""
-    cron_jobs_module = config("CRON_JOBS_MODULE")
+    """Retrieves value as attribute of CRONMAN_JOBS_MODULE."""
+    cron_jobs_module = config("CRONMAN_JOBS_MODULE")
     if cron_jobs_module is None:
         return default
     # AttributeError or ImportError should be loud

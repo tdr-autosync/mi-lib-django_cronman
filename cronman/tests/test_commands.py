@@ -40,7 +40,7 @@ class SchedulerCommandTestCase(BaseCronTestCase):
     )
     def test_run_worker_process(self, mock_cron_worker, mock_start):
         """Test for running scheduler which starts one worker for each entry in
-        CRON_JOBS_MODULE.
+        CRONMAN_JOBS_MODULE.
         """
         output = call_command("cron_scheduler", "run") or ""
         self.assertIn("Started {} job(s)".format(len(CRON_JOBS)), output)
@@ -52,7 +52,7 @@ class SchedulerCommandTestCase(BaseCronTestCase):
         )
         mock_cron_worker.return_value.resume.assert_not_called()
 
-    @override_cron_settings(CRON_JOBS_MODULE=None)
+    @override_cron_settings(CRONMAN_JOBS_MODULE=None)
     @mock.patch("cronman.scheduler.scheduler.CronSpawner.start_worker")
     @mock.patch(
         "cronman.scheduler.scheduler.CronScheduler.cron_worker",
@@ -271,7 +271,7 @@ class SchedulerCommandTestCase(BaseCronTestCase):
             "Scheduler is already enabled (lock file does not exist).\n",
         )
 
-    @override_cron_settings(CRON_JOBS_MODULE=None)
+    @override_cron_settings(CRONMAN_JOBS_MODULE=None)
     @mock.patch(
         "cronman.scheduler.scheduler.CronScheduler.cron_worker",
         new_callable=mock.PropertyMock,

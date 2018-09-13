@@ -49,7 +49,7 @@ CRONMAN_DEBUG = True
 # Module responsible for cron scheduler configuration,
 # the list of tasks available to select (admin)
 # and execute (cron machines):
-CRON_JOBS_MODULE = None
+CRONMAN_JOBS_MODULE = None
 CRON_NICE_CMD = "nice"
 CRON_IONICE_CMD = "ionice" if platform.system() == "Linux" else None
 CRON_REMOTE_MANAGER_ENABLED = True
