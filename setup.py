@@ -81,7 +81,7 @@ setup(
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
     url="https://github.com/unhaggle/django-cronman",
-    author="Motoinsight",
+    author="Unhaggle Inc.",
     author_email="",
     packages=find_packages(),
     install_requires=[
@@ -95,7 +95,16 @@ setup(
     ],
     include_package_data=True,
     tests_require=["mock", "redis < 2.11"],
-    cmdclass={
-        "test": TestCommand,
-    },
+    extras_require={"redis": ["redis < 2.11"]},
+    cmdclass={"test": TestCommand},
+    classifiers=[
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 2.7",
+        "License :: OSI Approved :: BSD License",
+        "Framework :: Django",
+        "Framework :: Django :: 1.11",
+        "Environment :: Web Environment",
+        "Operating System :: POSIX",
+        "Topic :: Utilities",
+    ],
 )

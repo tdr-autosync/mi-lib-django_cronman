@@ -4,6 +4,20 @@
 
 Django app to define and manage periodic tasks at Python level.
 
+## Installation
+
+`django-cronman` can be installed directly from PyPI using `pip`:
+
+```bash
+pip install django-cronman
+```
+
+You can also install it with additonal dependecies to be able to use Cron Remote Manager.
+
+```bash
+pip install django-cronman[redis]
+```
+
 ## Define a new cron job
 
 Cron job definition is inspired by Django Admin configuration. To add a new job, you have to create `cron_job.py`
