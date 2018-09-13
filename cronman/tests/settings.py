@@ -53,6 +53,7 @@ CRON_JOBS_MODULE = None
 CRON_NICE_CMD = "nice"
 CRON_IONICE_CMD = "ionice" if platform.system() == "Linux" else None
 CRON_REMOTE_MANAGER_ENABLED = True
+# CRONMAN_ADMIN_SITE = "django.contrib.admin.site"
 # Slack notifications settings:
 SLACK_ENABLED = False
 SLACK_URL = "https://fake-chat.slack.com/services/hooks/slackbot"
