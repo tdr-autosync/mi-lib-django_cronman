@@ -50,7 +50,7 @@ CRONMAN_DEBUG = True
 # the list of tasks available to select (admin)
 # and execute (cron machines):
 CRONMAN_JOBS_MODULE = None
-CRON_NICE_CMD = "nice"
+CRONMAN_NICE_CMD = "nice"
 CRON_IONICE_CMD = "ionice" if platform.system() == "Linux" else None
 CRON_REMOTE_MANAGER_ENABLED = True
 # CRONMAN_ADMIN_SITE = "django.contrib.admin.site"
