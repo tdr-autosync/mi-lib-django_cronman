@@ -37,7 +37,7 @@ class CronSpawner(BaseCronObject):
 
         environ = os.environ.copy()
         environ["CRON_JOBS_MODULE"] = str(config("CRON_JOBS_MODULE"))
-        environ["CRON_DATA_DIR"] = str(self.data_dir)
+        environ["CRONMAN_DATA_DIR"] = str(self.data_dir)
         environ["CRON_DEBUG"] = str(
             int(bool_param(config("CRON_DEBUG"), default=False))
         )

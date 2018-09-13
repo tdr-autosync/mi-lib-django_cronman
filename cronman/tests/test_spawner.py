@@ -10,7 +10,7 @@ import mock
 
 from cronman.spawner import CronSpawner
 from cronman.tests.base import (
-    TEST_CRON_DATA_DIR,
+    TEST_CRONMAN_DATA_DIR,
     BaseCronTestCase,
     expected_worker_env,
     mock_environ,
@@ -27,7 +27,7 @@ class CronSpawnerTestCase(BaseCronTestCase):
     def test_get_worker_env(self):
         """Test for CronSpawner.get_worker_env method"""
         self.assertDictContainsSubset(
-            {"CRON_DATA_DIR": TEST_CRON_DATA_DIR, "CRONITOR_ENABLED": "0"},
+            {"CRONMAN_DATA_DIR": TEST_CRONMAN_DATA_DIR, "CRONITOR_ENABLED": "0"},
             CronSpawner().get_worker_env(),
         )
 

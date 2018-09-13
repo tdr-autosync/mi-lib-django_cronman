@@ -20,13 +20,13 @@ from cronman.worker import CronWorker
 
 
 TEMP_FILE = "/tmp/sleep.txt"
-TEST_CRON_DATA_DIR = os.path.join(settings.CRON_DATA_DIR, "test")
+TEST_CRONMAN_DATA_DIR = os.path.join(settings.CRONMAN_DATA_DIR, "test")
 
 
 def override_cron_settings(**kwargs):
     """Override settings with default values for `cronman` app"""
     defaults = {
-        "CRON_DATA_DIR": TEST_CRON_DATA_DIR,
+        "CRONMAN_DATA_DIR": TEST_CRONMAN_DATA_DIR,
         "CRON_DEBUG": True,
         "CRON_JOBS_MODULE": "cronman.tests.cron_jobs",
         "CRONITOR_ENABLED": False,
@@ -119,7 +119,7 @@ def expected_worker_env():
         "CRONITOR_ENABLED": "0",
         "CRONITOR_URL": "https://cronitor.link/{cronitor_id}/{end_point}",
         "CRON_JOBS_MODULE": "cronman.tests.cron_jobs",
-        "CRON_DATA_DIR": TEST_CRON_DATA_DIR,
+        "CRONMAN_DATA_DIR": TEST_CRONMAN_DATA_DIR,
         "CRON_DEBUG": "1",
         "SLACK_ENABLED": "0",
         "CRON_NICE_CMD": "nice",
@@ -145,8 +145,8 @@ class BaseCronTestCase(TestCase):
             os.unlink(TEMP_FILE)
 
     def _remove_test_cron_data_dir(self):
-        if os.path.exists(TEST_CRON_DATA_DIR):
-            shutil.rmtree(TEST_CRON_DATA_DIR)
+        if os.path.exists(TEST_CRONMAN_DATA_DIR):
+            shutil.rmtree(TEST_CRONMAN_DATA_DIR)
 
     def assertMessageInTempFile(self, message):
         """Check that the message is present in TEMP_FILE"""

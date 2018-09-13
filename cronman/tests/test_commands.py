@@ -523,7 +523,7 @@ class WorkerCommandTestCase(BaseCronTestCase):
                 )
         # PIDFile should handle IOError (missing file) correctly:
         self.assertIsNone(
-            CronWorkerPIDFile(settings.CRON_DATA_DIR, "Fake").pid
+            CronWorkerPIDFile(settings.CRONMAN_DATA_DIR, "Fake").pid
         )
         # ProcessManager should handle missing PID
         # (due to truncated/missing file) correctly:

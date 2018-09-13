@@ -130,7 +130,7 @@ When adding a new monitor in Cronitor dashboard, please use type **heartbeat**. 
 
 ## Configure lock
 
-Tasks can acquire locks to prevent concurrent calls. Locks have form of PIDfiles located in `settings.CRON_DATA_DIR`. To modify lock behavior for given cron job class you can set `lock_type` attribute:
+Tasks can acquire locks to prevent concurrent calls. Locks have form of PIDfiles located in `settings.CRONMAN_DATA_DIR`. To modify lock behavior for given cron job class you can set `lock_type` attribute:
 
 ```python
 from cronman.taxonomies import LockType
