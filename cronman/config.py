@@ -44,9 +44,7 @@ class AppSettings(object):
     CRONMAN_JOBS_MODULE = Setting(
         "CRONMAN_JOBS_MODULE", None
     )  # type: Optional[Text]
-    CRONMAN_NICE_CMD = Setting(
-        "CRONMAN_NICE_CMD", default="nice"
-    )  # type: Text
+    CRONMAN_NICE_CMD = Setting("CRONMAN_NICE_CMD", "nice")  # type: Text
     CRONMAN_IONICE_CMD = Setting(
         "CRONMAN_IONICE_CMD",
         "ionice" if platform.system() == "Linux" else None,
