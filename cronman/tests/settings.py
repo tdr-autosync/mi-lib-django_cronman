@@ -45,7 +45,7 @@ LOGGING = {
 # Settings for `cronman` app:
 
 CRONMAN_DATA_DIR = os.path.join(tempfile.gettempdir(), "test.cronman")
-CRON_DEBUG = True
+CRONMAN_DEBUG = True
 # Module responsible for cron scheduler configuration,
 # the list of tasks available to select (admin)
 # and execute (cron machines):

@@ -19,7 +19,7 @@ class BaseCronObject(object):
 
     def __init__(self, **kwargs):
         self.data_dir = kwargs.get("data_dir", config("CRONMAN_DATA_DIR"))
-        self.debug = kwargs.get("debug", bool_param(config("CRON_DEBUG")))
+        self.debug = kwargs.get("debug", bool_param(config("CRONMAN_DEBUG")))
         self.cronitor = Cronitor()
         self.sentry = Sentry()
         self.slack = Slack()

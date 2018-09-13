@@ -27,7 +27,7 @@ def override_cron_settings(**kwargs):
     """Override settings with default values for `cronman` app"""
     defaults = {
         "CRONMAN_DATA_DIR": TEST_CRONMAN_DATA_DIR,
-        "CRON_DEBUG": True,
+        "CRONMAN_DEBUG": True,
         "CRON_JOBS_MODULE": "cronman.tests.cron_jobs",
         "CRONITOR_ENABLED": False,
         "SLACK_ENABLED": False,
@@ -120,7 +120,7 @@ def expected_worker_env():
         "CRONITOR_URL": "https://cronitor.link/{cronitor_id}/{end_point}",
         "CRON_JOBS_MODULE": "cronman.tests.cron_jobs",
         "CRONMAN_DATA_DIR": TEST_CRONMAN_DATA_DIR,
-        "CRON_DEBUG": "1",
+        "CRONMAN_DEBUG": "1",
         "SLACK_ENABLED": "0",
         "CRON_NICE_CMD": "nice",
         "CRON_IONICE_CMD": "ionice",
