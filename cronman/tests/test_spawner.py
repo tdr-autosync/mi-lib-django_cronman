@@ -27,7 +27,10 @@ class CronSpawnerTestCase(BaseCronTestCase):
     def test_get_worker_env(self):
         """Test for CronSpawner.get_worker_env method"""
         self.assertDictContainsSubset(
-            {"CRONMAN_DATA_DIR": TEST_CRONMAN_DATA_DIR, "CRONITOR_ENABLED": "0"},
+            {
+                "CRONMAN_DATA_DIR": TEST_CRONMAN_DATA_DIR,
+                "CRONITOR_ENABLED": "0",
+            },
             CronSpawner().get_worker_env(),
         )
 

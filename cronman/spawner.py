@@ -42,7 +42,7 @@ class CronSpawner(BaseCronObject):
             int(bool_param(config("CRONMAN_DEBUG"), default=False))
         )
         environ["CRONMAN_NICE_CMD"] = str(config("CRONMAN_NICE_CMD") or "")
-        environ["CRON_IONICE_CMD"] = str(config("CRON_IONICE_CMD") or "")
+        environ["CRONMAN_IONICE_CMD"] = str(config("CRONMAN_IONICE_CMD") or "")
         environ["CRONITOR_URL"] = str(config("CRONITOR_URL"))
         environ["CRONITOR_ENABLED"] = str(
             int(bool_param(config("CRONITOR_ENABLED"), default=False))
@@ -70,11 +70,15 @@ class CronSpawner(BaseCronObject):
         else:
             cpu_priority_args = []
         if (
-            settings.CRON_IONICE_CMD
+            settings.CRONMAN_IONICE_CMD
             and cron_job_class.worker_io_priority is not None
         ):
             io_class, io_class_data = cron_job_class.worker_io_priority
-            io_priority_args = [settings.CRON_IONICE_CMD, "-c", str(io_class)]
+            io_priority_args = [
+                settings.CRONMAN_IONICE_CMD,
+                "-c",
+                str(io_class),
+            ]
             if io_class_data is not None:
                 io_priority_args += ["-n", str(io_class_data)]
         else:

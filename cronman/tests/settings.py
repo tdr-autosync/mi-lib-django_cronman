@@ -51,7 +51,7 @@ CRONMAN_DEBUG = True
 # and execute (cron machines):
 CRONMAN_JOBS_MODULE = None
 CRONMAN_NICE_CMD = "nice"
-CRON_IONICE_CMD = "ionice" if platform.system() == "Linux" else None
+CRONMAN_IONICE_CMD = "ionice" if platform.system() == "Linux" else None
 CRON_REMOTE_MANAGER_ENABLED = True
 # CRONMAN_ADMIN_SITE = "django.contrib.admin.site"
 # Slack notifications settings:

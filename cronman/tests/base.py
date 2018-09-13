@@ -33,7 +33,7 @@ def override_cron_settings(**kwargs):
         "SLACK_ENABLED": False,
         "CRON_RAVEN_CMD": None,
         "CRONMAN_NICE_CMD": "nice",
-        "CRON_IONICE_CMD": "ionice",
+        "CRONMAN_IONICE_CMD": "ionice",
         "CRON_REMOTE_MANAGER_ENABLED": False,
     }
     defaults.update(kwargs)
@@ -123,7 +123,7 @@ def expected_worker_env():
         "CRONMAN_DEBUG": "1",
         "SLACK_ENABLED": "0",
         "CRONMAN_NICE_CMD": "nice",
-        "CRON_IONICE_CMD": "ionice",
+        "CRONMAN_IONICE_CMD": "ionice",
     }
 
 
