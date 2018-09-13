@@ -10,17 +10,13 @@ import shutil
 import signal
 
 from django.conf import settings
+from django.test.testcases import TestCase
 from django.test.utils import override_settings
 from django.utils.encoding import force_bytes
-from django.utils.module_loading import import_string
 
 import mock
 
 from cronman.worker import CronWorker
-
-BaseTestCase = import_string(
-    getattr(settings, "CRON_BASE_TEST_CASE", "django.test.testcases.TestCase")
-)
 
 
 TEMP_FILE = "/tmp/sleep.txt"
@@ -131,7 +127,7 @@ def expected_worker_env():
     }
 
 
-class BaseCronTestCase(BaseTestCase):
+class BaseCronTestCase(TestCase):
     """Base class for `cron_*` commands test cases"""
 
     def setUp(self):
