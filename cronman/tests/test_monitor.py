@@ -191,10 +191,10 @@ class SlackTestCase(BaseCronTestCase):
     """Tests for Slack class"""
 
     @override_cron_settings(
-        SLACK_URL="https://fake-chat.slack.com/services/hooks/slackbot",
-        SLACK_TOKEN="sLaCkTokEn",
-        SLACK_DEFAULT_CHANNEL="cronitor",
-        SLACK_ENABLED=False,
+        CRONMAN_SLACK_URL="https://fake-chat.slack.com/services/hooks/slackbot",
+        CRONMAN_SLACK_TOKEN="sLaCkTokEn",
+        CRONMAN_SLACK_DEFAULT_CHANNEL="cronitor",
+        CRONMAN_SLACK_ENABLED=False,
     )
     @mock.patch("cronman.monitor.requests.post")
     def test_post_disabled(self, mock_post):
@@ -208,10 +208,10 @@ class SlackTestCase(BaseCronTestCase):
         )
 
     @override_cron_settings(
-        SLACK_URL="https://fake-chat.slack.com/services/hooks/slackbot",
-        SLACK_TOKEN="sLaCkTokEn",
-        SLACK_DEFAULT_CHANNEL="cronitor",
-        SLACK_ENABLED=True,
+        CRONMAN_SLACK_URL="https://fake-chat.slack.com/services/hooks/slackbot",
+        CRONMAN_SLACK_TOKEN="sLaCkTokEn",
+        CRONMAN_SLACK_DEFAULT_CHANNEL="cronitor",
+        CRONMAN_SLACK_ENABLED=True,
     )
     @mock.patch("cronman.monitor.requests.post")
     def test_post_enabled(self, mock_post):
@@ -227,10 +227,10 @@ class SlackTestCase(BaseCronTestCase):
         )
 
     @override_cron_settings(
-        SLACK_URL="https://fake-chat.slack.com/services/hooks/slackbot",
-        SLACK_TOKEN="sLaCkTokEn",
-        SLACK_DEFAULT_CHANNEL="cronitor",
-        SLACK_ENABLED=True,
+        CRONMAN_SLACK_URL="https://fake-chat.slack.com/services/hooks/slackbot",
+        CRONMAN_SLACK_TOKEN="sLaCkTokEn",
+        CRONMAN_SLACK_DEFAULT_CHANNEL="cronitor",
+        CRONMAN_SLACK_ENABLED=True,
     )
     @mock.patch("cronman.monitor.requests.post")
     def test_post_enabled_custom_channel(self, mock_post):
@@ -246,10 +246,10 @@ class SlackTestCase(BaseCronTestCase):
         )
 
     @override_cron_settings(
-        SLACK_URL="https://fake-chat.slack.com/services/hooks/slackbot",
-        SLACK_TOKEN="sLaCkTokEn",
-        SLACK_DEFAULT_CHANNEL="cronitor",
-        SLACK_ENABLED=True,
+        CRONMAN_SLACK_URL="https://fake-chat.slack.com/services/hooks/slackbot",
+        CRONMAN_SLACK_TOKEN="sLaCkTokEn",
+        CRONMAN_SLACK_DEFAULT_CHANNEL="cronitor",
+        CRONMAN_SLACK_ENABLED=True,
     )
     @mock.patch(
         "cronman.monitor.requests.post",

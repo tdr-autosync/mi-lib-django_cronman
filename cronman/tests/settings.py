@@ -55,10 +55,10 @@ CRONMAN_IONICE_CMD = "ionice" if platform.system() == "Linux" else None
 CRONMAN_REMOTE_MANAGER_ENABLED = True
 # CRONMAN_ADMIN_SITE = "django.contrib.admin.site"
 # Slack notifications settings:
-SLACK_ENABLED = False
-SLACK_URL = "https://fake-chat.slack.com/services/hooks/slackbot"
-SLACK_TOKEN = "test-slack-token"
-SLACK_DEFAULT_CHANNEL = "cron"
+CRONMAN_SLACK_ENABLED = False
+CRONMAN_SLACK_URL = "https://fake-chat.slack.com/services/hooks/slackbot"
+CRONMAN_SLACK_TOKEN = "test-slack-token"
+CRONMAN_SLACK_DEFAULT_CHANNEL = "cron"
 # Cronitor settings:
 CRONITOR_ENABLED = False
 CRONITOR_URL = "https://cronitor.link/{cronitor_id}/{end_point}"

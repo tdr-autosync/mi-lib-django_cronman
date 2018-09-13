@@ -30,7 +30,7 @@ def override_cron_settings(**kwargs):
         "CRONMAN_DEBUG": True,
         "CRONMAN_JOBS_MODULE": "cronman.tests.cron_jobs",
         "CRONITOR_ENABLED": False,
-        "SLACK_ENABLED": False,
+        "CRONMAN_SLACK_ENABLED": False,
         "CRON_RAVEN_CMD": None,
         "CRONMAN_NICE_CMD": "nice",
         "CRONMAN_IONICE_CMD": "ionice",
@@ -121,7 +121,7 @@ def expected_worker_env():
         "CRONMAN_JOBS_MODULE": "cronman.tests.cron_jobs",
         "CRONMAN_DATA_DIR": TEST_CRONMAN_DATA_DIR,
         "CRONMAN_DEBUG": "1",
-        "SLACK_ENABLED": "0",
+        "CRONMAN_SLACK_ENABLED": "0",
         "CRONMAN_NICE_CMD": "nice",
         "CRONMAN_IONICE_CMD": "ionice",
     }

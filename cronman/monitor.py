@@ -100,10 +100,10 @@ class Slack(object):
 
     def __init__(self):
         self.logger = logger
-        self.enabled = bool_param(config("SLACK_ENABLED"))
-        self.url = settings.SLACK_URL
-        self.token = settings.SLACK_TOKEN
-        self.default_channel = settings.SLACK_DEFAULT_CHANNEL
+        self.enabled = bool_param(config("CRONMAN_SLACK_ENABLED"))
+        self.url = settings.CRONMAN_SLACK_URL
+        self.token = settings.CRONMAN_SLACK_TOKEN
+        self.default_channel = settings.CRONMAN_SLACK_DEFAULT_CHANNEL
 
     def _prepare_message(self, message):
         # slack don't process html entities
