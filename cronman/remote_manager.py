@@ -11,8 +11,6 @@ from django.utils.functional import cached_property
 # pylint: disable=E0401, E0611
 from django.utils.six.moves import range
 
-import redis
-
 from cronman.base import BaseCronObject
 from cronman.exceptions import MissingDependency
 from cronman.redis_client import get_strict_redis
