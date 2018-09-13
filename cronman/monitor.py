@@ -71,7 +71,7 @@ class Sentry(object):
 
     def __init__(self):
         self.raven_client = get_raven_client()
-        self.raven_cmd = settings.CRON_RAVEN_CMD
+        self.raven_cmd = settings.CRONMAN_RAVEN_CMD
 
     @property
     def capture_exceptions(self):

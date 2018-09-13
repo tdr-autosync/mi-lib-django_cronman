@@ -31,7 +31,7 @@ def override_cron_settings(**kwargs):
         "CRONMAN_JOBS_MODULE": "cronman.tests.cron_jobs",
         "CRONMAN_CRONITOR_ENABLED": False,
         "CRONMAN_SLACK_ENABLED": False,
-        "CRON_RAVEN_CMD": None,
+        "CRONMAN_RAVEN_CMD": None,
         "CRONMAN_NICE_CMD": "nice",
         "CRONMAN_IONICE_CMD": "ionice",
         "CRONMAN_REMOTE_MANAGER_ENABLED": False,

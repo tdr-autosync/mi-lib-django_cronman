@@ -249,8 +249,8 @@ Calls to `cron_scheduler run` will not spawn worker processes while scheduler is
 ## Send errors to sentry
 
 Errors in cron job classes are intercepted by `cron_worker` and sent to Sentry using the same config as other Django commands (`settings.RAVEN_MANAGEMENT_COMMAND_CONFIG`).
-If `settings.CRON_RAVEN_CMD` is defined, the scheduler will use it as execution script for worker processes, e.g.
-`python manage.py cron_worker run Foo:bar=1` will be converted to `{CRON_RAVEN_CMD} -c "python manage.py cron_worker run Foo:bar=1"`
+If `settings.CRONMAN_RAVEN_CMD` is defined, the scheduler will use it as execution script for worker processes, e.g.
+`python manage.py cron_worker run Foo:bar=1` will be converted to `{CRONMAN_RAVEN_CMD} -c "python manage.py cron_worker run Foo:bar=1"`
 
 ## Cron Tasks - running cron jobs from Admin area
 
