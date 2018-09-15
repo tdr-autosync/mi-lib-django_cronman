@@ -15,17 +15,17 @@ from cronman.tests.base import BaseCronTestCase
 class CronTaskAdminFormTestCase(BaseCronTestCase):
     """Tests for CronTaskAdminForm"""
 
-    @override_settings(CRON_JOBS_MODULE=None)
+    @override_settings(CRONMAN_JOBS_MODULE=None)
     def test_cron_job_choices_empty(self):
-        """Test that cron job choices are empty when CRON_JOBS_MODULE is not
+        """Test that cron job choices are empty when CRONMAN_JOBS_MODULE is not
         set.
         """
         form = CronTaskAdminForm(instance=CronTask())
         self.assertEqual(form.fields["cron_job"].choices, [])
 
-    @override_settings(CRON_JOBS_MODULE="cronman.tests.cron_jobs")
+    @override_settings(CRONMAN_JOBS_MODULE="cronman.tests.cron_jobs")
     def test_cron_job_choices_matching(self):
-        """Test that cron job choices are matching CRON_JOBS_MODULE
+        """Test that cron job choices are matching CRONMAN_JOBS_MODULE
         configuration.
         """
         form = CronTaskAdminForm(instance=CronTask())
@@ -37,7 +37,7 @@ class CronTaskAdminFormTestCase(BaseCronTestCase):
             set(cron_jobs.ALLOWED_CRON_TASKS),
         )
 
-    @override_settings(CRON_JOBS_MODULE="cronman.tests.cron_jobs")
+    @override_settings(CRONMAN_JOBS_MODULE="cronman.tests.cron_jobs")
     def test_valid_form_no_params(self):
         """Test for valid form - no cron job params"""
         now = timezone.now()
@@ -51,7 +51,7 @@ class CronTaskAdminFormTestCase(BaseCronTestCase):
             {"cron_job": cron_job, "params": "", "start_at": now},
         )
 
-    @override_settings(CRON_JOBS_MODULE="cronman.tests.cron_jobs")
+    @override_settings(CRONMAN_JOBS_MODULE="cronman.tests.cron_jobs")
     def test_valid_form_with_params(self):
         """Test for valid form - valid cron job params"""
         now = timezone.now()
@@ -67,7 +67,7 @@ class CronTaskAdminFormTestCase(BaseCronTestCase):
             {"cron_job": cron_job, "params": params, "start_at": now},
         )
 
-    @override_settings(CRON_JOBS_MODULE="cronman.tests.cron_jobs")
+    @override_settings(CRONMAN_JOBS_MODULE="cronman.tests.cron_jobs")
     def test_invalid_params(self):
         """Test for invalid form - invalid cron job params"""
         now = timezone.now()

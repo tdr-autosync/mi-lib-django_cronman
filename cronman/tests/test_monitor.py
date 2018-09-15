@@ -16,8 +16,8 @@ class CronitorTestCase(BaseCronTestCase):
     """Tests for Cronitor class"""
 
     @override_cron_settings(
-        CRONITOR_URL="https://cronitor.link/{cronitor_id}/{end_point}",
-        CRONITOR_ENABLED=False,
+        CRONMAN_CRONITOR_URL="https://cronitor.link/{cronitor_id}/{end_point}",
+        CRONMAN_CRONITOR_ENABLED=False,
     )
     @mock.patch("cronman.monitor.requests.head")
     def test_run_disabled(self, mock_head):
@@ -31,8 +31,8 @@ class CronitorTestCase(BaseCronTestCase):
         )
 
     @override_cron_settings(
-        CRONITOR_URL="https://cronitor.link/{cronitor_id}/{end_point}",
-        CRONITOR_ENABLED=True,
+        CRONMAN_CRONITOR_URL="https://cronitor.link/{cronitor_id}/{end_point}",
+        CRONMAN_CRONITOR_ENABLED=True,
     )
     @mock.patch("cronman.monitor.requests.head")
     def test_run_enabled(self, mock_head):
@@ -45,8 +45,8 @@ class CronitorTestCase(BaseCronTestCase):
         )
 
     @override_cron_settings(
-        CRONITOR_URL="https://cronitor.link/{cronitor_id}/{end_point}",
-        CRONITOR_ENABLED=True,
+        CRONMAN_CRONITOR_URL="https://cronitor.link/{cronitor_id}/{end_point}",
+        CRONMAN_CRONITOR_ENABLED=True,
     )
     @mock.patch(
         "cronman.monitor.requests.head",
@@ -71,8 +71,8 @@ class CronitorTestCase(BaseCronTestCase):
         )
 
     @override_cron_settings(
-        CRONITOR_URL="https://cronitor.link/{cronitor_id}/{end_point}",
-        CRONITOR_ENABLED=False,
+        CRONMAN_CRONITOR_URL="https://cronitor.link/{cronitor_id}/{end_point}",
+        CRONMAN_CRONITOR_ENABLED=False,
     )
     @mock.patch("cronman.monitor.requests.head")
     def test_complete_disabled(self, mock_head):
@@ -86,8 +86,8 @@ class CronitorTestCase(BaseCronTestCase):
         )
 
     @override_cron_settings(
-        CRONITOR_URL="https://cronitor.link/{cronitor_id}/{end_point}",
-        CRONITOR_ENABLED=True,
+        CRONMAN_CRONITOR_URL="https://cronitor.link/{cronitor_id}/{end_point}",
+        CRONMAN_CRONITOR_ENABLED=True,
     )
     @mock.patch("cronman.monitor.requests.head")
     def test_complete_enabled(self, mock_head):
@@ -100,8 +100,8 @@ class CronitorTestCase(BaseCronTestCase):
         )
 
     @override_cron_settings(
-        CRONITOR_URL="https://cronitor.link/{cronitor_id}/{end_point}",
-        CRONITOR_ENABLED=True,
+        CRONMAN_CRONITOR_URL="https://cronitor.link/{cronitor_id}/{end_point}",
+        CRONMAN_CRONITOR_ENABLED=True,
     )
     @mock.patch(
         "cronman.monitor.requests.head",
@@ -127,8 +127,8 @@ class CronitorTestCase(BaseCronTestCase):
         )
 
     @override_cron_settings(
-        CRONITOR_URL="https://cronitor.link/{cronitor_id}/{end_point}",
-        CRONITOR_ENABLED=False,
+        CRONMAN_CRONITOR_URL="https://cronitor.link/{cronitor_id}/{end_point}",
+        CRONMAN_CRONITOR_ENABLED=False,
     )
     @mock.patch("cronman.monitor.requests.head")
     def test_fail_disabled(self, mock_head):
@@ -142,8 +142,8 @@ class CronitorTestCase(BaseCronTestCase):
         )
 
     @override_cron_settings(
-        CRONITOR_URL="https://cronitor.link/{cronitor_id}/{end_point}",
-        CRONITOR_ENABLED=True,
+        CRONMAN_CRONITOR_URL="https://cronitor.link/{cronitor_id}/{end_point}",
+        CRONMAN_CRONITOR_ENABLED=True,
     )
     @mock.patch("cronman.monitor.requests.head")
     def test_fail_enabled(self, mock_head):
@@ -158,8 +158,8 @@ class CronitorTestCase(BaseCronTestCase):
         )
 
     @override_cron_settings(
-        CRONITOR_URL="https://cronitor.link/{cronitor_id}/{end_point}",
-        CRONITOR_ENABLED=True,
+        CRONMAN_CRONITOR_URL="https://cronitor.link/{cronitor_id}/{end_point}",
+        CRONMAN_CRONITOR_ENABLED=True,
     )
     @mock.patch(
         "cronman.monitor.requests.head",
@@ -191,10 +191,10 @@ class SlackTestCase(BaseCronTestCase):
     """Tests for Slack class"""
 
     @override_cron_settings(
-        SLACK_URL="https://fake-chat.slack.com/services/hooks/slackbot",
-        SLACK_TOKEN="sLaCkTokEn",
-        SLACK_DEFAULT_CHANNEL="cronitor",
-        SLACK_ENABLED=False,
+        CRONMAN_SLACK_URL="https://fake-chat.slack.com/services/hooks/slackbot",
+        CRONMAN_SLACK_TOKEN="sLaCkTokEn",
+        CRONMAN_SLACK_DEFAULT_CHANNEL="cronitor",
+        CRONMAN_SLACK_ENABLED=False,
     )
     @mock.patch("cronman.monitor.requests.post")
     def test_post_disabled(self, mock_post):
@@ -208,10 +208,10 @@ class SlackTestCase(BaseCronTestCase):
         )
 
     @override_cron_settings(
-        SLACK_URL="https://fake-chat.slack.com/services/hooks/slackbot",
-        SLACK_TOKEN="sLaCkTokEn",
-        SLACK_DEFAULT_CHANNEL="cronitor",
-        SLACK_ENABLED=True,
+        CRONMAN_SLACK_URL="https://fake-chat.slack.com/services/hooks/slackbot",
+        CRONMAN_SLACK_TOKEN="sLaCkTokEn",
+        CRONMAN_SLACK_DEFAULT_CHANNEL="cronitor",
+        CRONMAN_SLACK_ENABLED=True,
     )
     @mock.patch("cronman.monitor.requests.post")
     def test_post_enabled(self, mock_post):
@@ -227,10 +227,10 @@ class SlackTestCase(BaseCronTestCase):
         )
 
     @override_cron_settings(
-        SLACK_URL="https://fake-chat.slack.com/services/hooks/slackbot",
-        SLACK_TOKEN="sLaCkTokEn",
-        SLACK_DEFAULT_CHANNEL="cronitor",
-        SLACK_ENABLED=True,
+        CRONMAN_SLACK_URL="https://fake-chat.slack.com/services/hooks/slackbot",
+        CRONMAN_SLACK_TOKEN="sLaCkTokEn",
+        CRONMAN_SLACK_DEFAULT_CHANNEL="cronitor",
+        CRONMAN_SLACK_ENABLED=True,
     )
     @mock.patch("cronman.monitor.requests.post")
     def test_post_enabled_custom_channel(self, mock_post):
@@ -246,10 +246,10 @@ class SlackTestCase(BaseCronTestCase):
         )
 
     @override_cron_settings(
-        SLACK_URL="https://fake-chat.slack.com/services/hooks/slackbot",
-        SLACK_TOKEN="sLaCkTokEn",
-        SLACK_DEFAULT_CHANNEL="cronitor",
-        SLACK_ENABLED=True,
+        CRONMAN_SLACK_URL="https://fake-chat.slack.com/services/hooks/slackbot",
+        CRONMAN_SLACK_TOKEN="sLaCkTokEn",
+        CRONMAN_SLACK_DEFAULT_CHANNEL="cronitor",
+        CRONMAN_SLACK_ENABLED=True,
     )
     @mock.patch(
         "cronman.monitor.requests.post",

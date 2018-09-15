@@ -52,7 +52,7 @@ class CronScheduler(BaseCronObject):
 
     @cached_property
     def cron_jobs(self):
-        """Return jobs if CRON_JOBS_MODULE is a valid module (must have
+        """Return jobs if CRONMAN_JOBS_MODULE is a valid module (must have
         CRON_JOBS attribute). Return () otherwise.
         """
         return cron_jobs_module_config("CRON_JOBS", default=())
@@ -79,7 +79,7 @@ class CronScheduler(BaseCronObject):
             self.warning(
                 CronSchedulerNoJobs(
                     "Scheduler has no jobs to start. "
-                    "Please verify settings.CRON_JOBS_MODULE."
+                    "Please verify settings.CRONMAN_JOBS_MODULE."
                 )
             )
 

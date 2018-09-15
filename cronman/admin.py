@@ -3,19 +3,19 @@
 
 from __future__ import unicode_literals
 
-from django.conf import settings
 from django.contrib import admin
 from django.utils.module_loading import import_string
 
+from cronman.config import app_settings
 from cronman.forms import CronTaskAdminForm
 from cronman.models import CronTask
 
-admin_site = import_string(
-    getattr(settings, "CRON_ADMIN_SITE", "django.contrib.admin.site")
-)
+
+admin_site_path = app_settings.CRONMAN_ADMIN_SITE
+
+admin_site = import_string(admin_site_path) if admin_site_path else None
 
 
-@admin.register(CronTask, site=admin_site)
 class CronTaskAdmin(admin.ModelAdmin):
     """Admin interface options for CronTask model"""
 
@@ -63,3 +63,7 @@ class CronTaskAdmin(admin.ModelAdmin):
         else:
             readonly_fields = []
         return readonly_fields
+
+
+if admin_site:
+    admin_site.register(CronTask, CronTaskAdmin)

@@ -9,7 +9,7 @@ import re
 from distutils import log
 from distutils.errors import DistutilsError
 
-from setuptools import find_packages, setup
+from setuptools import Command, find_packages, setup
 from setuptools.command.test import test as BaseTestCommand
 
 DJANGO_SETTINGS_MODULE = "cronman.tests.settings"
@@ -35,9 +35,11 @@ def find_version(*path_parts):
     return version_match.group("version")
 
 
-def django_setup():
+def django_setup(debug=False):
     """Set up Django using test settings module."""
     os.environ["DJANGO_SETTINGS_MODULE"] = DJANGO_SETTINGS_MODULE
+    if debug:
+        os.environ.setdefault("TEST_CRONMAN_LOG_LEVEL", "DEBUG")
 
     import django
 
@@ -74,6 +76,52 @@ class TestCommand(BaseTestCommand):
             raise DistutilsError(msg)
 
 
+class BaseAliasCommand(Command):
+    """Setup command working as simple alias to Django's command."""
+
+    user_options = []
+
+    django_command = "help"
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        """Run `shell`"""
+        django_setup(debug=True)
+
+        from django.core.management import call_command
+
+        call_command(self.django_command)
+
+
+class ShellCommand(BaseAliasCommand):
+    """Command to run Django's `shell`."""
+
+    description = "run Django's `shell`."
+
+    django_command = "shell"
+
+
+class MakeMigrationsCommand(BaseAliasCommand):
+    """Command to run Django's `makemigrations`."""
+
+    description = "run Django's `makemigrations`."
+
+    django_command = "makemigrations"
+
+
+class MigrateCommand(BaseAliasCommand):
+    """Command to run Django's `migrate`."""
+
+    description = "run Django's `migrate`."
+
+    django_command = "migrate"
+
+
 setup(
     name="django-cronman",
     version=find_version("cronman", "version.py"),
@@ -87,16 +135,19 @@ setup(
     install_requires=[
         "croniter < 0.4",
         "django < 2.0",
-        "geopy < 1.1",
         "python-dateutil < 2.7",
-        "raven < 5.33",
         "requests >= 2.1",
         "typing",
     ],
     include_package_data=True,
-    tests_require=["mock", "redis < 2.11"],
-    extras_require={"redis": ["redis < 2.11"]},
-    cmdclass={"test": TestCommand},
+    tests_require=["mock", "raven < 5.33", "redis < 2.11"],
+    extras_require={"redis": ["redis < 2.11"], "sentry": ["raven < 5.33"]},
+    cmdclass={
+        "test": TestCommand,
+        "shell": ShellCommand,
+        "makemigrations": MakeMigrationsCommand,
+        "migrate": MigrateCommand,
+    },
     classifiers=[
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 2.7",

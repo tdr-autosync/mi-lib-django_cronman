@@ -8,7 +8,7 @@ import os
 import mock
 
 from cronman import utils
-from cronman.tests.base import TEST_CRON_DATA_DIR, BaseCronTestCase
+from cronman.tests.base import TEST_CRONMAN_DATA_DIR, BaseCronTestCase
 
 
 class CronUtilsTestCase(BaseCronTestCase):
@@ -232,19 +232,19 @@ class CronUtilsTestCase(BaseCronTestCase):
 
     def test_ensure_dir_existing_directory(self):
         """Test for `ensure_dir` function - case: existing directory"""
-        os.makedirs(TEST_CRON_DATA_DIR)
-        self.assertTrue(utils.ensure_dir(TEST_CRON_DATA_DIR))
+        os.makedirs(TEST_CRONMAN_DATA_DIR)
+        self.assertTrue(utils.ensure_dir(TEST_CRONMAN_DATA_DIR))
 
     def test_ensure_dir_new_directory_tree(self):
         """Test for `ensure_dir` function - case: new directory tree"""
         self.assertTrue(
-            utils.ensure_dir(os.path.join(TEST_CRON_DATA_DIR, "a/b/c"))
+            utils.ensure_dir(os.path.join(TEST_CRONMAN_DATA_DIR, "a/b/c"))
         )
 
     def test_ensure_dir_new_directory_failure(self):
         """Test for `ensure_dir` function - case: it's a file"""
-        os.makedirs(TEST_CRON_DATA_DIR)
-        path = os.path.join(TEST_CRON_DATA_DIR, "text.txt")
+        os.makedirs(TEST_CRONMAN_DATA_DIR)
+        path = os.path.join(TEST_CRONMAN_DATA_DIR, "text.txt")
         with open(path, "a"):
             self.assertFalse(utils.ensure_dir(path))
 
@@ -258,7 +258,7 @@ class CronUtilsTestCase(BaseCronTestCase):
 
     def test_execute(self):
         """Test for `execute` function"""
-        path = os.path.join(TEST_CRON_DATA_DIR, "execute")
+        path = os.path.join(TEST_CRONMAN_DATA_DIR, "execute")
         os.makedirs(path)
         with open(os.path.join(path, "aaa.txt"), "a"):
             pass
@@ -275,7 +275,7 @@ class CronUtilsTestCase(BaseCronTestCase):
 
     def test_execute_pipe(self):
         """Test for `execute_pipe` function"""
-        path = os.path.join(TEST_CRON_DATA_DIR, "execute")
+        path = os.path.join(TEST_CRONMAN_DATA_DIR, "execute")
         os.makedirs(path)
         with open(os.path.join(path, "aaa.txt"), "a"):
             pass
@@ -294,7 +294,7 @@ class CronUtilsTestCase(BaseCronTestCase):
 
     def test_execute_pipe_non_zero_return_code(self):
         """Test for `execute_pipe` function - case: non-zero return code"""
-        path = os.path.join(TEST_CRON_DATA_DIR, "execute")
+        path = os.path.join(TEST_CRONMAN_DATA_DIR, "execute")
         os.makedirs(path)
         result = utils.execute_pipe(["ls", "-A1", path], ["grep", "bb"])
         self.assertFalse(result.ok)
@@ -302,7 +302,7 @@ class CronUtilsTestCase(BaseCronTestCase):
 
     def test_cwd_ok(self):
         """Test for `CWD` context manager - case: no exception raised"""
-        path = os.path.realpath(os.path.join(TEST_CRON_DATA_DIR, "cwd"))
+        path = os.path.realpath(os.path.join(TEST_CRONMAN_DATA_DIR, "cwd"))
         os.makedirs(path)
         cwd = os.getcwd()
         with utils.CWD(path):
@@ -312,7 +312,7 @@ class CronUtilsTestCase(BaseCronTestCase):
 
     def test_cwd_exception(self):
         """Test for `CWD` context manager - case: exception raised"""
-        path = os.path.realpath(os.path.join(TEST_CRON_DATA_DIR, "cwd"))
+        path = os.path.realpath(os.path.join(TEST_CRONMAN_DATA_DIR, "cwd"))
         os.makedirs(path)
         cwd = os.getcwd()
         try:

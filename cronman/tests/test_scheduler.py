@@ -20,7 +20,7 @@ class CronSchedulerTestCase(BaseCronTestCase):
 
     # Main methods
 
-    @override_cron_settings(CRON_JOBS_MODULE=None)
+    @override_cron_settings(CRONMAN_JOBS_MODULE=None)
     @mock.patch("cronman.scheduler.scheduler.CronSpawner.start_worker")
     @mock.patch(
         "cronman.scheduler.scheduler.CronScheduler.cron_worker",
@@ -212,25 +212,25 @@ class CronSchedulerTestCase(BaseCronTestCase):
     @override_cron_settings()
     def test_cron_jobs(self):
         """Test that cron_jobs property is correct (CRON_JOBS property of
-        settings.CRON_JOBS_MODULE).
+        settings.CRONMAN_JOBS_MODULE).
         """
         scheduler = CronScheduler()
         from cronman.tests.cron_jobs import CRON_JOBS
 
         self.assertEqual(scheduler.cron_jobs, CRON_JOBS)
 
-    @override_cron_settings(CRON_JOBS_MODULE=None)
+    @override_cron_settings(CRONMAN_JOBS_MODULE=None)
     def test_cron_jobs_empty(self):
-        """Test that cron_jobs property is empty tuple when CRON_JOBS_MODULE
+        """Test that cron_jobs property is empty tuple when CRONMAN_JOBS_MODULE
         is not set.
         """
         scheduler = CronScheduler()
         self.assertEqual(scheduler.cron_jobs, ())
 
-    @override_cron_settings(CRON_JOBS_MODULE="module.does.not.exist")
+    @override_cron_settings(CRONMAN_JOBS_MODULE="module.does.not.exist")
     def test_cron_jobs_import_error(self):
-        """Test that cron_jobs property raises ImportError when CRON_JOBS_MODULE
-        is not a valid module."""
+        """Test that cron_jobs property raises ImportError when
+        CRONMAN_JOBS_MODULE is not a valid module."""
         scheduler = CronScheduler()
         with self.assertRaises(ImportError):
             self.assertEqual(scheduler.cron_jobs, ())

@@ -10,7 +10,7 @@ import mock
 
 from cronman.spawner import CronSpawner
 from cronman.tests.base import (
-    TEST_CRON_DATA_DIR,
+    TEST_CRONMAN_DATA_DIR,
     BaseCronTestCase,
     expected_worker_env,
     mock_environ,
@@ -27,7 +27,10 @@ class CronSpawnerTestCase(BaseCronTestCase):
     def test_get_worker_env(self):
         """Test for CronSpawner.get_worker_env method"""
         self.assertDictContainsSubset(
-            {"CRON_DATA_DIR": TEST_CRON_DATA_DIR, "CRONITOR_ENABLED": "0"},
+            {
+                "CRONMAN_DATA_DIR": TEST_CRONMAN_DATA_DIR,
+                "CRONMAN_CRONITOR_ENABLED": "0",
+            },
             CronSpawner().get_worker_env(),
         )
 
@@ -179,7 +182,7 @@ class CronSpawnerTestCase(BaseCronTestCase):
             env=expected_worker_env(),
         )
 
-    @override_cron_settings(CRON_RAVEN_CMD=None)
+    @override_cron_settings(CRONMAN_RAVEN_CMD=None)
     @mock.patch("cronman.spawner.spawn")
     @mock.patch(
         "cronman.spawner.sys.argv", ["manage.py", "cron_scheduler", "run"]
@@ -187,7 +190,7 @@ class CronSpawnerTestCase(BaseCronTestCase):
     @mock.patch("cronman.spawner.sys.executable", "/bin/python")
     def test_start_worker_no_raven_cmd_no_settings(self, mock_spawn):
         """Test for CronSpawner.start_worker method
-         - CRON_RAVEN_CMD defined, no --settings passed
+         - CRONMAN_RAVEN_CMD defined, no --settings passed
         """
         spawner = CronSpawner()
         spawner.start_worker("Sleep:seconds=10")
@@ -200,7 +203,7 @@ class CronSpawnerTestCase(BaseCronTestCase):
             env=spawner.get_worker_env(),
         )
 
-    @override_cron_settings(CRON_RAVEN_CMD=None)
+    @override_cron_settings(CRONMAN_RAVEN_CMD=None)
     @mock.patch("cronman.spawner.spawn")
     @mock.patch(
         "cronman.spawner.sys.argv",
@@ -209,7 +212,7 @@ class CronSpawnerTestCase(BaseCronTestCase):
     @mock.patch("cronman.spawner.sys.executable", "/bin/python")
     def test_start_worker_no_raven_cmd_with_settings(self, mock_spawn):
         """Test for CronSpawner.start_worker method
-         - CRON_RAVEN_CMD undefined, --settings passed
+         - CRONMAN_RAVEN_CMD undefined, --settings passed
         """
         spawner = CronSpawner()
         spawner.start_worker("Sleep:seconds=10")
@@ -223,7 +226,7 @@ class CronSpawnerTestCase(BaseCronTestCase):
             env=spawner.get_worker_env(),
         )
 
-    @override_cron_settings(CRON_RAVEN_CMD=None)
+    @override_cron_settings(CRONMAN_RAVEN_CMD=None)
     @mock.patch("cronman.spawner.spawn")
     @mock.patch(
         "cronman.spawner.sys.argv", ["manage.py", "cron_scheduler", "run"]
@@ -231,7 +234,7 @@ class CronSpawnerTestCase(BaseCronTestCase):
     @mock.patch("cronman.spawner.sys.executable", "/bin/python")
     def test_start_worker_no_raven_cmd_no_settings_quoted(self, mock_spawn):
         """Test for CronSpawner.start_worker method
-         - CRON_RAVEN_CMD defined, no --settings passed, quoted param
+         - CRONMAN_RAVEN_CMD defined, no --settings passed, quoted param
         """
         spawner = CronSpawner()
         spawner.start_worker('Sleep:seconds=10,quoted="This is a test"')
@@ -244,7 +247,7 @@ class CronSpawnerTestCase(BaseCronTestCase):
             env=spawner.get_worker_env(),
         )
 
-    @override_cron_settings(CRON_RAVEN_CMD="/usr/bin/raven-cmd")
+    @override_cron_settings(CRONMAN_RAVEN_CMD="/usr/bin/raven-cmd")
     @mock.patch("cronman.spawner.spawn")
     @mock.patch(
         "cronman.spawner.sys.argv", ["manage.py", "cron_scheduler", "run"]
@@ -252,7 +255,7 @@ class CronSpawnerTestCase(BaseCronTestCase):
     @mock.patch("cronman.spawner.sys.executable", "/bin/python")
     def test_start_worker_with_raven_cmd_no_settings(self, mock_spawn):
         """Test for CronSpawner.start_worker method
-         - CRON_RAVEN_CMD defined, no --settings passed
+         - CRONMAN_RAVEN_CMD defined, no --settings passed
         """
         spawner = CronSpawner()
         spawner.start_worker("Sleep:seconds=10")
@@ -263,7 +266,7 @@ class CronSpawnerTestCase(BaseCronTestCase):
             env=spawner.get_worker_env(),
         )
 
-    @override_cron_settings(CRON_RAVEN_CMD="/usr/bin/raven-cmd")
+    @override_cron_settings(CRONMAN_RAVEN_CMD="/usr/bin/raven-cmd")
     @mock.patch("cronman.spawner.spawn")
     @mock.patch(
         "cronman.spawner.sys.argv",
@@ -272,7 +275,7 @@ class CronSpawnerTestCase(BaseCronTestCase):
     @mock.patch("cronman.spawner.sys.executable", "/bin/python")
     def test_start_worker_with_raven_cmd_with_settings(self, mock_spawn):
         """Test for CronSpawner.start_worker method
-         - CRON_RAVEN_CMD defined, --settings passed
+         - CRONMAN_RAVEN_CMD defined, --settings passed
         """
         spawner = CronSpawner()
         spawner.start_worker("Sleep:seconds=10")
@@ -284,7 +287,7 @@ class CronSpawnerTestCase(BaseCronTestCase):
             env=spawner.get_worker_env(),
         )
 
-    @override_cron_settings(CRON_RAVEN_CMD="/usr/bin/raven-cmd")
+    @override_cron_settings(CRONMAN_RAVEN_CMD="/usr/bin/raven-cmd")
     @mock.patch("cronman.spawner.spawn")
     @mock.patch(
         "cronman.spawner.sys.argv", ["manage.py", "cron_scheduler", "run"]
@@ -292,7 +295,7 @@ class CronSpawnerTestCase(BaseCronTestCase):
     @mock.patch("cronman.spawner.sys.executable", "/bin/python")
     def test_start_worker_with_raven_cmd_no_settings_quoted(self, mock_spawn):
         """Test for CronSpawner.start_worker method
-         - CRON_RAVEN_CMD defined, no --settings passed, quoted param
+         - CRONMAN_RAVEN_CMD defined, no --settings passed, quoted param
         """
         spawner = CronSpawner()
         spawner.start_worker('Sleep:seconds=10,quoted="This is a test"')
@@ -306,7 +309,7 @@ class CronSpawnerTestCase(BaseCronTestCase):
 
     # Starting workers with CPU/IO priority
 
-    @override_cron_settings(CRON_RAVEN_CMD=None)
+    @override_cron_settings(CRONMAN_RAVEN_CMD=None)
     @mock.patch("cronman.spawner.spawn")
     @mock.patch(
         "cronman.spawner.sys.argv", ["manage.py", "cron_scheduler", "run"]
@@ -316,7 +319,7 @@ class CronSpawnerTestCase(BaseCronTestCase):
         self, mock_spawn
     ):
         """Test for CronSpawner.start_worker method
-         - CRON_RAVEN_CMD defined, no --settings passed, nice, ionice
+         - CRONMAN_RAVEN_CMD defined, no --settings passed, nice, ionice
         """
         spawner = CronSpawner()
         spawner.start_worker("LowestCPUIOSleep:seconds=10")
@@ -337,7 +340,7 @@ class CronSpawnerTestCase(BaseCronTestCase):
             env=spawner.get_worker_env(),
         )
 
-    @override_cron_settings(CRON_RAVEN_CMD="/usr/bin/raven-cmd")
+    @override_cron_settings(CRONMAN_RAVEN_CMD="/usr/bin/raven-cmd")
     @mock.patch("cronman.spawner.spawn")
     @mock.patch(
         "cronman.spawner.sys.argv", ["manage.py", "cron_scheduler", "run"]
@@ -347,7 +350,7 @@ class CronSpawnerTestCase(BaseCronTestCase):
         self, mock_spawn
     ):
         """Test for CronSpawner.start_worker method
-         - CRON_RAVEN_CMD defined, no --settings passed, quoted param, ionice
+         - CRONMAN_RAVEN_CMD defined, no --settings passed, quoted param, ionice
         """
         spawner = CronSpawner()
         spawner.start_worker('IdleIOSleep:seconds=10,quoted="This is a test"')
@@ -359,7 +362,7 @@ class CronSpawnerTestCase(BaseCronTestCase):
             env=spawner.get_worker_env(),
         )
 
-    @override_cron_settings(CRON_RAVEN_CMD="/usr/bin/raven-cmd")
+    @override_cron_settings(CRONMAN_RAVEN_CMD="/usr/bin/raven-cmd")
     @mock.patch("cronman.spawner.spawn")
     @mock.patch(
         "cronman.spawner.sys.argv", ["manage.py", "cron_scheduler", "run"]
@@ -367,7 +370,7 @@ class CronSpawnerTestCase(BaseCronTestCase):
     @mock.patch("cronman.spawner.sys.executable", "/bin/python")
     def test_start_worker_nice_with_raven_cmd_no_settings(self, mock_spawn):
         """Test for CronSpawner.start_worker method
-         - CRON_RAVEN_CMD defined, no --settings passed, nice
+         - CRONMAN_RAVEN_CMD defined, no --settings passed, nice
         """
         spawner = CronSpawner()
         spawner.start_worker("LowCPUSleep:seconds=10")

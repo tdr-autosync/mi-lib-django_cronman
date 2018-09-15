@@ -9,36 +9,33 @@ import os
 import shutil
 import signal
 
-from django.conf import settings
+from django.test.testcases import TestCase
 from django.test.utils import override_settings
 from django.utils.encoding import force_bytes
-from django.utils.module_loading import import_string
 
 import mock
 
+from cronman.config import app_settings
 from cronman.worker import CronWorker
-
-BaseTestCase = import_string(
-    getattr(settings, "CRON_BASE_TEST_CASE", "django.test.testcases.TestCase")
-)
 
 
 TEMP_FILE = "/tmp/sleep.txt"
-TEST_CRON_DATA_DIR = os.path.join(settings.CRON_DATA_DIR, "test")
+TEST_CRONMAN_DATA_DIR = os.path.join(app_settings.CRONMAN_DATA_DIR, "test")
 
 
 def override_cron_settings(**kwargs):
     """Override settings with default values for `cronman` app"""
     defaults = {
-        "CRON_DATA_DIR": TEST_CRON_DATA_DIR,
-        "CRON_DEBUG": True,
-        "CRON_JOBS_MODULE": "cronman.tests.cron_jobs",
-        "CRONITOR_ENABLED": False,
-        "SLACK_ENABLED": False,
-        "CRON_RAVEN_CMD": None,
-        "CRON_NICE_CMD": "nice",
-        "CRON_IONICE_CMD": "ionice",
-        "CRON_REMOTE_MANAGER_ENABLED": False,
+        "CRONMAN_DATA_DIR": TEST_CRONMAN_DATA_DIR,
+        "CRONMAN_DEBUG": True,
+        "CRONMAN_JOBS_MODULE": "cronman.tests.cron_jobs",
+        "CRONMAN_CRONITOR_ENABLED": False,
+        "CRONMAN_SLACK_ENABLED": False,
+        "CRONMAN_SENTRY_ENABLED": True,
+        "CRONMAN_RAVEN_CMD": None,
+        "CRONMAN_NICE_CMD": "nice",
+        "CRONMAN_IONICE_CMD": "ionice",
+        "CRONMAN_REMOTE_MANAGER_ENABLED": False,
     }
     defaults.update(kwargs)
     return override_settings(**defaults)
@@ -118,20 +115,22 @@ def mock_environ():
 
 def expected_worker_env():
     """Environment dictionary expected to be passed to worker subprocess"""
+    cronitor_url = "https://cronitor.link/{cronitor_id}/{end_point}"
     return {
         "SOME_ENV_VAR": "42",
-        "CRONITOR_ENABLED": "0",
-        "CRONITOR_URL": "https://cronitor.link/{cronitor_id}/{end_point}",
-        "CRON_JOBS_MODULE": "cronman.tests.cron_jobs",
-        "CRON_DATA_DIR": TEST_CRON_DATA_DIR,
-        "CRON_DEBUG": "1",
-        "SLACK_ENABLED": "0",
-        "CRON_NICE_CMD": "nice",
-        "CRON_IONICE_CMD": "ionice",
+        "CRONMAN_CRONITOR_ENABLED": "0",
+        "CRONMAN_CRONITOR_URL": cronitor_url,
+        "CRONMAN_JOBS_MODULE": "cronman.tests.cron_jobs",
+        "CRONMAN_DATA_DIR": TEST_CRONMAN_DATA_DIR,
+        "CRONMAN_DEBUG": "1",
+        "CRONMAN_SLACK_ENABLED": "0",
+        "CRONMAN_NICE_CMD": "nice",
+        "CRONMAN_IONICE_CMD": "ionice",
+        "CRONMAN_SENTRY_ENABLED": "1",
     }
 
 
-class BaseCronTestCase(BaseTestCase):
+class BaseCronTestCase(TestCase):
     """Base class for `cron_*` commands test cases"""
 
     def setUp(self):
@@ -149,8 +148,8 @@ class BaseCronTestCase(BaseTestCase):
             os.unlink(TEMP_FILE)
 
     def _remove_test_cron_data_dir(self):
-        if os.path.exists(TEST_CRON_DATA_DIR):
-            shutil.rmtree(TEST_CRON_DATA_DIR)
+        if os.path.exists(TEST_CRONMAN_DATA_DIR):
+            shutil.rmtree(TEST_CRONMAN_DATA_DIR)
 
     def assertMessageInTempFile(self, message):
         """Check that the message is present in TEMP_FILE"""

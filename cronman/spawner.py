@@ -8,9 +8,8 @@ import os
 import sys
 import time
 
-from django.conf import settings
-
 from cronman.base import BaseCronObject
+from cronman.config import app_settings
 from cronman.job import cron_job_registry
 from cronman.utils import bool_param, config, parse_job_spec, spawn
 
@@ -36,19 +35,22 @@ class CronSpawner(BaseCronObject):
         # string or bytestring
 
         environ = os.environ.copy()
-        environ["CRON_JOBS_MODULE"] = str(config("CRON_JOBS_MODULE"))
-        environ["CRON_DATA_DIR"] = str(self.data_dir)
-        environ["CRON_DEBUG"] = str(
-            int(bool_param(config("CRON_DEBUG"), default=False))
+        environ["CRONMAN_JOBS_MODULE"] = str(config("CRONMAN_JOBS_MODULE"))
+        environ["CRONMAN_DATA_DIR"] = str(self.data_dir)
+        environ["CRONMAN_DEBUG"] = str(
+            int(bool_param(config("CRONMAN_DEBUG"), default=False))
         )
-        environ["CRON_NICE_CMD"] = str(config("CRON_NICE_CMD") or "")
-        environ["CRON_IONICE_CMD"] = str(config("CRON_IONICE_CMD") or "")
-        environ["CRONITOR_URL"] = str(config("CRONITOR_URL"))
-        environ["CRONITOR_ENABLED"] = str(
-            int(bool_param(config("CRONITOR_ENABLED"), default=False))
+        environ["CRONMAN_NICE_CMD"] = str(config("CRONMAN_NICE_CMD") or "")
+        environ["CRONMAN_IONICE_CMD"] = str(config("CRONMAN_IONICE_CMD") or "")
+        environ["CRONMAN_CRONITOR_URL"] = str(config("CRONMAN_CRONITOR_URL"))
+        environ["CRONMAN_CRONITOR_ENABLED"] = str(
+            int(bool_param(config("CRONMAN_CRONITOR_ENABLED"), default=False))
         )
-        environ["SLACK_ENABLED"] = str(
-            int(bool_param(config("SLACK_ENABLED"), default=False))
+        environ["CRONMAN_SLACK_ENABLED"] = str(
+            int(bool_param(config("CRONMAN_SLACK_ENABLED"), default=False))
+        )
+        environ["CRONMAN_SENTRY_ENABLED"] = str(
+            int(bool_param(config("CRONMAN_SENTRY_ENABLED"), default=False))
         )
         environ.update(self.extra_env)
         return environ
@@ -59,22 +61,26 @@ class CronSpawner(BaseCronObject):
         """
         cron_job_class = cron_job_registry.get(parse_job_spec(job_spec)[0])
         if (
-            settings.CRON_NICE_CMD
+            app_settings.CRONMAN_NICE_CMD
             and cron_job_class.worker_cpu_priority is not None
         ):
             cpu_priority_args = [
-                settings.CRON_NICE_CMD,
+                app_settings.CRONMAN_NICE_CMD,
                 "-n",
                 str(cron_job_class.worker_cpu_priority),
             ]
         else:
             cpu_priority_args = []
         if (
-            settings.CRON_IONICE_CMD
+            app_settings.CRONMAN_IONICE_CMD
             and cron_job_class.worker_io_priority is not None
         ):
             io_class, io_class_data = cron_job_class.worker_io_priority
-            io_priority_args = [settings.CRON_IONICE_CMD, "-c", str(io_class)]
+            io_priority_args = [
+                app_settings.CRONMAN_IONICE_CMD,
+                "-c",
+                str(io_class),
+            ]
             if io_class_data is not None:
                 io_priority_args += ["-n", str(io_class_data)]
         else:

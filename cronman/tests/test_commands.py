@@ -6,12 +6,12 @@ from __future__ import unicode_literals
 import os
 import socket
 
-from django.conf import settings
 from django.core.management import CommandError, call_command
 
 import mock
 import redis
 
+from cronman.config import app_settings
 from cronman.scheduler import CronScheduler
 from cronman.taxonomies import CronSchedulerStatus
 from cronman.tests.base import (
@@ -40,7 +40,7 @@ class SchedulerCommandTestCase(BaseCronTestCase):
     )
     def test_run_worker_process(self, mock_cron_worker, mock_start):
         """Test for running scheduler which starts one worker for each entry in
-        CRON_JOBS_MODULE.
+        CRONMAN_JOBS_MODULE.
         """
         output = call_command("cron_scheduler", "run") or ""
         self.assertIn("Started {} job(s)".format(len(CRON_JOBS)), output)
@@ -52,7 +52,7 @@ class SchedulerCommandTestCase(BaseCronTestCase):
         )
         mock_cron_worker.return_value.resume.assert_not_called()
 
-    @override_cron_settings(CRON_JOBS_MODULE=None)
+    @override_cron_settings(CRONMAN_JOBS_MODULE=None)
     @mock.patch("cronman.scheduler.scheduler.CronSpawner.start_worker")
     @mock.patch(
         "cronman.scheduler.scheduler.CronScheduler.cron_worker",
@@ -67,7 +67,7 @@ class SchedulerCommandTestCase(BaseCronTestCase):
         mock_start.assert_not_called()
         mock_cron_worker.return_value.resume.assert_not_called()
 
-    @override_cron_settings(CRON_REMOTE_MANAGER_ENABLED=True)
+    @override_cron_settings(CRONMAN_REMOTE_MANAGER_ENABLED=True)
     @mock.patch("cronman.scheduler.scheduler.CronSpawner.start_worker")
     @mock.patch(
         "cronman.scheduler.scheduler.CronScheduler.cron_worker",
@@ -103,7 +103,7 @@ class SchedulerCommandTestCase(BaseCronTestCase):
         mock_cron_worker.return_value.suspend.assert_called_once()
         mock_redis.return_value.delete.assert_called_once()
 
-    @override_cron_settings(CRON_REMOTE_MANAGER_ENABLED=True)
+    @override_cron_settings(CRONMAN_REMOTE_MANAGER_ENABLED=True)
     @mock.patch("cronman.scheduler.scheduler.CronSpawner.start_worker")
     @mock.patch(
         "cronman.scheduler.scheduler.CronScheduler.cron_worker",
@@ -147,7 +147,7 @@ class SchedulerCommandTestCase(BaseCronTestCase):
         mock_cron_worker.return_value.resume.assert_called_once()
         mock_redis.return_value.delete.assert_called_once()
 
-    @override_cron_settings(CRON_REMOTE_MANAGER_ENABLED=True)
+    @override_cron_settings(CRONMAN_REMOTE_MANAGER_ENABLED=True)
     @mock.patch("cronman.scheduler.scheduler.CronSpawner.start_worker")
     @mock.patch(
         "cronman.scheduler.scheduler.CronScheduler.cron_worker",
@@ -271,7 +271,7 @@ class SchedulerCommandTestCase(BaseCronTestCase):
             "Scheduler is already enabled (lock file does not exist).\n",
         )
 
-    @override_cron_settings(CRON_JOBS_MODULE=None)
+    @override_cron_settings(CRONMAN_JOBS_MODULE=None)
     @mock.patch(
         "cronman.scheduler.scheduler.CronScheduler.cron_worker",
         new_callable=mock.PropertyMock,
@@ -523,7 +523,7 @@ class WorkerCommandTestCase(BaseCronTestCase):
                 )
         # PIDFile should handle IOError (missing file) correctly:
         self.assertIsNone(
-            CronWorkerPIDFile(settings.CRON_DATA_DIR, "Fake").pid
+            CronWorkerPIDFile(app_settings.CRONMAN_DATA_DIR, "Fake").pid
         )
         # ProcessManager should handle missing PID
         # (due to truncated/missing file) correctly:
@@ -894,7 +894,7 @@ class RemoteManagerCommandTestCase(BaseCronTestCase):
 
     # ENABLE:
 
-    @override_cron_settings(CRON_REMOTE_MANAGER_ENABLED=True)
+    @override_cron_settings(CRONMAN_REMOTE_MANAGER_ENABLED=True)
     @mock.patch(
         "cronman.remote_manager.CronRemoteManager.redis_client",
         new_callable=mock.PropertyMock,
@@ -916,7 +916,7 @@ class RemoteManagerCommandTestCase(BaseCronTestCase):
             ]
         )
 
-    @override_cron_settings(CRON_REMOTE_MANAGER_ENABLED=True)
+    @override_cron_settings(CRONMAN_REMOTE_MANAGER_ENABLED=True)
     @mock.patch(
         "cronman.remote_manager.CronRemoteManager.redis_client",
         new_callable=mock.PropertyMock,
@@ -935,7 +935,7 @@ class RemoteManagerCommandTestCase(BaseCronTestCase):
         )
         mock_set.assert_not_called()
 
-    @override_cron_settings(CRON_REMOTE_MANAGER_ENABLED=False)
+    @override_cron_settings(CRONMAN_REMOTE_MANAGER_ENABLED=False)
     @mock.patch(
         "cronman.remote_manager.CronRemoteManager.redis_client",
         new_callable=mock.PropertyMock,
@@ -955,7 +955,7 @@ class RemoteManagerCommandTestCase(BaseCronTestCase):
 
     # DISABLE
 
-    @override_cron_settings(CRON_REMOTE_MANAGER_ENABLED=True)
+    @override_cron_settings(CRONMAN_REMOTE_MANAGER_ENABLED=True)
     @mock.patch(
         "cronman.remote_manager.CronRemoteManager.redis_client",
         new_callable=mock.PropertyMock,
@@ -978,7 +978,7 @@ class RemoteManagerCommandTestCase(BaseCronTestCase):
             ]
         )
 
-    @override_cron_settings(CRON_REMOTE_MANAGER_ENABLED=True)
+    @override_cron_settings(CRONMAN_REMOTE_MANAGER_ENABLED=True)
     @mock.patch(
         "cronman.remote_manager.CronRemoteManager.redis_client",
         new_callable=mock.PropertyMock,
@@ -1007,7 +1007,7 @@ class RemoteManagerCommandTestCase(BaseCronTestCase):
         )
         mock_sleep.assert_called_once_with(120)
 
-    @override_cron_settings(CRON_REMOTE_MANAGER_ENABLED=True)
+    @override_cron_settings(CRONMAN_REMOTE_MANAGER_ENABLED=True)
     @mock.patch(
         "cronman.remote_manager.CronRemoteManager.redis_client",
         new_callable=mock.PropertyMock,
@@ -1027,7 +1027,7 @@ class RemoteManagerCommandTestCase(BaseCronTestCase):
         )
         mock_set.assert_not_called()
 
-    @override_cron_settings(CRON_REMOTE_MANAGER_ENABLED=False)
+    @override_cron_settings(CRONMAN_REMOTE_MANAGER_ENABLED=False)
     @mock.patch(
         "cronman.remote_manager.CronRemoteManager.redis_client",
         new_callable=mock.PropertyMock,
@@ -1048,7 +1048,7 @@ class RemoteManagerCommandTestCase(BaseCronTestCase):
 
     # CLEAR_STATUS:
 
-    @override_cron_settings(CRON_REMOTE_MANAGER_ENABLED=True)
+    @override_cron_settings(CRONMAN_REMOTE_MANAGER_ENABLED=True)
     @mock.patch(
         "cronman.remote_manager.CronRemoteManager.redis_client",
         new_callable=mock.PropertyMock,
@@ -1071,7 +1071,7 @@ class RemoteManagerCommandTestCase(BaseCronTestCase):
             ]
         )
 
-    @override_cron_settings(CRON_REMOTE_MANAGER_ENABLED=True)
+    @override_cron_settings(CRONMAN_REMOTE_MANAGER_ENABLED=True)
     @mock.patch(
         "cronman.remote_manager.CronRemoteManager.redis_client",
         new_callable=mock.PropertyMock,
@@ -1092,7 +1092,7 @@ class RemoteManagerCommandTestCase(BaseCronTestCase):
         )
         mock_delete.assert_not_called()
 
-    @override_cron_settings(CRON_REMOTE_MANAGER_ENABLED=False)
+    @override_cron_settings(CRONMAN_REMOTE_MANAGER_ENABLED=False)
     @mock.patch(
         "cronman.remote_manager.CronRemoteManager.redis_client",
         new_callable=mock.PropertyMock,
@@ -1114,7 +1114,7 @@ class RemoteManagerCommandTestCase(BaseCronTestCase):
 
     # CLEAR_STATUS:
 
-    @override_cron_settings(CRON_REMOTE_MANAGER_ENABLED=True)
+    @override_cron_settings(CRONMAN_REMOTE_MANAGER_ENABLED=True)
     @mock.patch(
         "cronman.remote_manager.CronRemoteManager.redis_client",
         new_callable=mock.PropertyMock,
@@ -1138,7 +1138,7 @@ class RemoteManagerCommandTestCase(BaseCronTestCase):
             ]
         )
 
-    @override_cron_settings(CRON_REMOTE_MANAGER_ENABLED=True)
+    @override_cron_settings(CRONMAN_REMOTE_MANAGER_ENABLED=True)
     @mock.patch(
         "cronman.remote_manager.CronRemoteManager.redis_client",
         new_callable=mock.PropertyMock,
@@ -1159,7 +1159,7 @@ class RemoteManagerCommandTestCase(BaseCronTestCase):
         )
         mock_get.assert_not_called()
 
-    @override_cron_settings(CRON_REMOTE_MANAGER_ENABLED=False)
+    @override_cron_settings(CRONMAN_REMOTE_MANAGER_ENABLED=False)
     @mock.patch(
         "cronman.remote_manager.CronRemoteManager.redis_client",
         new_callable=mock.PropertyMock,
@@ -1181,7 +1181,7 @@ class RemoteManagerCommandTestCase(BaseCronTestCase):
 
     # KILL:
 
-    @override_cron_settings(CRON_REMOTE_MANAGER_ENABLED=True)
+    @override_cron_settings(CRONMAN_REMOTE_MANAGER_ENABLED=True)
     @mock.patch(
         "cronman.remote_manager.CronRemoteManager.redis_client",
         new_callable=mock.PropertyMock,
@@ -1198,7 +1198,7 @@ class RemoteManagerCommandTestCase(BaseCronTestCase):
             [mock.call("cron_scheduler:kill:prod-cron01", "ParseInvoiceData")]
         )
 
-    @override_cron_settings(CRON_REMOTE_MANAGER_ENABLED=True)
+    @override_cron_settings(CRONMAN_REMOTE_MANAGER_ENABLED=True)
     @mock.patch(
         "cronman.remote_manager.CronRemoteManager.redis_client",
         new_callable=mock.PropertyMock,
@@ -1215,7 +1215,7 @@ class RemoteManagerCommandTestCase(BaseCronTestCase):
         self.assertIn("kill:ParseInvoiceData prod-cron01 -> None", output)
         mock_rpush.assert_not_called()
 
-    @override_cron_settings(CRON_REMOTE_MANAGER_ENABLED=False)
+    @override_cron_settings(CRONMAN_REMOTE_MANAGER_ENABLED=False)
     @mock.patch(
         "cronman.remote_manager.CronRemoteManager.redis_client",
         new_callable=mock.PropertyMock,
