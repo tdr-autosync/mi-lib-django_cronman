@@ -79,7 +79,10 @@ class CronTask(models.Model):
     pid = models.PositiveIntegerField(null=True, blank=True)
 
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
     )
     created_at = models.DateTimeField(null=True, auto_now_add=True)
     started_at = models.DateTimeField(null=True, blank=True)
