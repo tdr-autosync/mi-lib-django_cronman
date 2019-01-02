@@ -7,9 +7,7 @@ import logging
 import socket
 
 from django.utils.functional import cached_property
-
-# pylint: disable=E0401, E0611
-from django.utils.six.moves import range
+from django.utils.six.moves import range  # pylint: disable=E0401, E0611
 
 from cronman.base import BaseCronObject
 from cronman.exceptions import MissingDependency

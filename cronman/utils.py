@@ -16,9 +16,7 @@ from importlib import import_module
 from django.utils.encoding import force_text
 from django.utils.functional import cached_property
 from django.utils.six import text_type
-
-# pylint: disable=E0401, E0611
-from django.utils.six.moves import range
+from django.utils.six.moves import range  # pylint: disable=E0401, E0611
 
 from dateutil.parser import parse as dateutil_parse
 
