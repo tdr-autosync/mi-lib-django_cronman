@@ -5,7 +5,6 @@ from __future__ import unicode_literals
 
 import os
 
-
 DEBUG = True
 
 SECRET_KEY = "test-secret-key-n8gm2vaj43tqzh3yvbg9x1vj9f3m9mfcq7"

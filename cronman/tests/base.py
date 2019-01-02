@@ -18,7 +18,6 @@ import mock
 from cronman.config import app_settings
 from cronman.worker import CronWorker
 
-
 TEMP_FILE = "/tmp/sleep.txt"
 TEST_CRONMAN_DATA_DIR = os.path.join(app_settings.CRONMAN_DATA_DIR, "test")
 

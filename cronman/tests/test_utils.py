@@ -67,7 +67,7 @@ class CronUtilsTestCase(BaseCronTestCase):
         )
 
     def test_parse_params_mixed_quoted(self):
-        """Test for `parse_params` function - case: mixed arguments with 
+        """Test for `parse_params` function - case: mixed arguments with
         quoted values (comma, space)
         """
         self.assertEqual(

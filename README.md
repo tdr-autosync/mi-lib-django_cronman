@@ -265,6 +265,3 @@ class HelloWorld(BaseCronJob):
 ```
 To request another run of given cron job we can just create a new `CronTask` record in Admin.
 Cron job `RunCronTasks` started every 4 minutes by the scheduler will spawn a separate worker process for each pending Cron Task.
-
-
-

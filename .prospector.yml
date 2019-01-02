@@ -1,0 +1,53 @@
+output-format: json
+
+strictness: medium
+test-warnings: false
+doc-warnings: false
+autodetect: true
+member-warnings: false
+uses:
+  - django
+
+ignore-paths:
+  - docs
+  - migrations
+  - tests
+
+ignore-patterns:
+  - (^|/)skip(this)?(/|$)
+
+pep8:
+  disable:
+    - W602
+    - W603
+  enable:
+    - W601
+  options:
+    max-line-length: 79
+
+mccabe:
+  run: true
+  options:
+    max-complexity: 18
+
+pyroma:
+  run: true
+  disable:
+    - PYR07
+    - PYR09
+    - PYR11
+    - PYR13
+    - PYR14
+
+vulture:
+  run: false
+
+dodgy:
+  run: false
+
+pyflakes:
+  disable:
+    - F401
+
+pylint:
+  run: true

@@ -1,0 +1,3 @@
+[bandit]
+skips: B101,B301,B403,B308,B303
+exclude: node_modules,tests
