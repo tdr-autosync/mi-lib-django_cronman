@@ -324,7 +324,12 @@ def execute_pipe(*args_list, **kwargs):
     of the last process.
     Blocking call.
     """
-    assert len(args_list) > 1
+    num_args = len(args_list)
+    if num_args < 2:
+        raise AssertionError(
+            "execute_pipe requires at least 2 positional arguments, "
+            "got {}.".format(num_args)
+        )
     prev_process = last_process = None
     for args in args_list:
         prev_process = last_process
