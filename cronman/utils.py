@@ -34,7 +34,7 @@ logger = logging.getLogger("cronman.command")
 
 
 PARAM_PATTERN = re.compile(
-    "(\s*(?P<key>[\w\d_\-]*)\s*=\s*)?((?P<value>(\"[^\"]*\"|'[^']*'|[^,]*)),?)"
+    r"(\s*(?P<key>[\w\d_\-]*)\s*=\s*)?((?P<value>(\"[^\"]*\"|'[^']*'|[^,]*)),?)"
 )
 
 
@@ -190,7 +190,7 @@ def date_param(value, default=None):
 def list_param(
     value,
     default=None,
-    delimiter="\s+",
+    delimiter=r"\s+",
     strip=True,
     skip_empty=True,
     replace_map=None,
@@ -225,7 +225,7 @@ def flag_param(value, flag, flags):
     """
     value = bool_param(value)
     if value is None:
-        flags = list_param(flags, delimiter="[\s;,\-\|]+")
+        flags = list_param(flags, delimiter=r"[\s;,\-\|]+")
         value = flag in flags
     return value
 
