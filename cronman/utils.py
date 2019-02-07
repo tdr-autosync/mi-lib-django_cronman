@@ -25,6 +25,7 @@ from cronman.config import app_settings
 
 MYPY = False
 if MYPY:
+    # pylint: disable=unused-import
     from typing import Union, Text, TypeVar
 
     T = TypeVar("T")
