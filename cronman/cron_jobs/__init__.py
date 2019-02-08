@@ -3,11 +3,8 @@
 
 from __future__ import unicode_literals
 
-from cronman.cron_jobs.clean_cron_tasks import (
-    CleanCronTasks,
-    MotoCleanCronTasks,
-)
-from cronman.cron_jobs.run_cron_tasks import MotoRunCronTasks, RunCronTasks
+from cronman.cron_jobs.clean_cron_tasks import CleanCronTasks
+from cronman.cron_jobs.run_cron_tasks import RunCronTasks
 from cronman.cron_jobs.sleep import (
     ClassLockedSleep,
     IdleIOSleep,
@@ -23,9 +20,7 @@ from cronman.cron_jobs.sleep import (
 from cronman.job import cron_job_registry
 
 cron_job_registry.register(RunCronTasks)
-cron_job_registry.register(MotoRunCronTasks)
 cron_job_registry.register(CleanCronTasks)
-cron_job_registry.register(MotoCleanCronTasks)
 cron_job_registry.register(Sleep)
 cron_job_registry.register(ClassLockedSleep)
 cron_job_registry.register(ParamsLockedSleep)
