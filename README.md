@@ -12,7 +12,7 @@ Django app to define and manage periodic tasks at Python level.
 pip install django-cronman
 ```
 
-You can also install it with additonal dependecies to be able to use Cron Remote Manager.
+You can also install it with additional dependencies to be able to use Cron Remote Manager.
 
 ```bash
 pip install django-cronman[redis]
@@ -240,7 +240,7 @@ Scheduler command can be disabled temporarily:
 ```
 python manage.py cron_scheduler disable
 ```
-and reenabled later:
+and re-enabled later:
 ```
 python manage.py cron_scheduler enable
 ```
@@ -267,4 +267,7 @@ To request another run of given cron job we can just create a new `CronTask` rec
 Cron job `RunCronTasks` started every 4 minutes by the scheduler will spawn a separate worker process for each pending Cron Task.
 
 
+## Changelog
+
+2019-02-25 - 1.0.0 Initial version released
 
