@@ -3,6 +3,7 @@
 
 from __future__ import unicode_literals
 
+from cronman.config import app_settings
 from cronman.job import BaseCronJob
 from cronman.models import CronTask
 from cronman.taxonomies import PIDStatus
@@ -13,7 +14,7 @@ from cronman.worker import CronWorker
 class CleanCronTasks(BaseCronJob):
     """Changes status of dead CronTasks from STARTED to FAILED."""
 
-    cronitor_id = "M21GXY"
+    cronitor_id = app_settings.CRONMAN_CLEAN_CRON_TASKS_CRONITOR_ID
 
     def __init__(self, logger=None):
         super(CleanCronTasks, self).__init__(logger=logger)
@@ -53,12 +54,3 @@ class CleanCronTasks(BaseCronJob):
             for item in current_cron_jobs
             if item["status"] == PIDStatus.ALIVE
         ]
-
-
-class MotoCleanCronTasks(CleanCronTasks):
-    """Changes status of dead CronTasks from STARTED to FAILED.
-
-    Moto-specific cron job.
-    """
-
-    cronitor_id = "K7OpxI"

@@ -12,7 +12,7 @@ class CronConfig(AppConfig):
     name = "cronman"
 
     def ready(self):
-        """Run app-specific code when Django starts"""
+        """Run app-specific code when Django starts."""
         from cronman import autodiscover
 
         autodiscover()

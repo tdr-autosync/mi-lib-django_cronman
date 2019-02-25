@@ -52,6 +52,12 @@ class AppSettings(object):
     CRONMAN_REMOTE_MANAGER_ENABLED = Setting(
         "CRONMAN_REMOTE_MANAGER_ENABLED", False
     )  # type: bool
+    CRONMAN_RUN_CRON_TASKS_CRONITOR_ID = Setting(
+        "CRONMAN_RUN_CRON_TASKS_CRONITOR_ID", None
+    )  # type: Optional[Text]
+    CRONMAN_CLEAN_CRON_TASKS_CRONITOR_ID = Setting(
+        "CRONMAN_CLEAN_CRON_TASKS_CRONITOR_ID", None
+    )  # type: Optional[Text]
     CRONMAN_ADMIN_SITE = Setting(
         "CRONMAN_ADMIN_SITE", "django.contrib.admin.site"
     )  # type: Optional[Text]

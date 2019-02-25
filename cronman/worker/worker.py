@@ -368,7 +368,7 @@ class CronWorker(BaseCronObject):
         Raises CronWorkerInvalidParams if string cannot be parsed.
         """
         if job_spec_or_pid:
-            if re.match("\d+", job_spec_or_pid):
+            if re.match(r"\d+", job_spec_or_pid):
                 pid = int(job_spec_or_pid)
                 name = args = kwargs = None
             else:

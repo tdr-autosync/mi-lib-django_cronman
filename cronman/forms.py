@@ -45,7 +45,7 @@ class CronTaskAdminForm(forms.ModelForm):
         return params
 
     def accept_cron_job_choice(self, name, cron_job_class):
-        """Check if given cron job name and class can be accepted as 
+        """Check if given cron job name and class can be accepted as
         `cron_job` choice in this form.
         """
         return name in self.allowed_tasks
