@@ -11,6 +11,7 @@ from django.utils.functional import cached_property
 from croniter import croniter
 
 from cronman.base import BaseCronObject
+from cronman.config import app_settings
 from cronman.exceptions import (
     CronSchedulerLocked,
     CronSchedulerNoJobs,
@@ -24,7 +25,7 @@ from cronman.scheduler.files import (
 )
 from cronman.spawner import CronSpawner
 from cronman.taxonomies import CronSchedulerStatus
-from cronman.utils import cron_jobs_module_config
+from cronman.utils import cron_jobs_module_config, format_exception
 from cronman.worker import CronWorker
 
 logger = logging.getLogger("cronman.command.cron_scheduler")
@@ -43,6 +44,7 @@ class CronScheduler(BaseCronObject):
     wait_for_memory = 7  # number of seconds to wait on first OOM error
 
     def __init__(self, now=None, **kwargs):
+        self.cronitor_id = app_settings.CRONMAN_CRON_SCHEDULER_CRONITOR_ID
         kwargs["logger"] = kwargs.get("logger", logger)
         super(CronScheduler, self).__init__(**kwargs)
         self.now = now or datetime.datetime.now()
@@ -79,7 +81,7 @@ class CronScheduler(BaseCronObject):
             self.warning(
                 CronSchedulerNoJobs(
                     "Scheduler has no jobs to start. "
-                    "Please verify settings.CRONMAN_JOBS_MODULE."
+                    "Please verify settings.CRON_JOBS_MODULE."
                 )
             )
 
@@ -135,22 +137,30 @@ class CronScheduler(BaseCronObject):
         jobs = self.get_jobs()
         num_jobs = len(jobs)
         num_started = 0
-        for i, (time_spec, job_spec) in enumerate(jobs, 1):
-            self.logger.info(
-                "Starting worker for {} {} ({}/{})".format(
-                    time_spec, job_spec, i, num_jobs
+
+        self.before_start()
+        try:
+            for i, (time_spec, job_spec) in enumerate(jobs, 1):
+                self.logger.info(
+                    "Starting worker for {} {} ({}/{})".format(
+                        time_spec, job_spec, i, num_jobs
+                    )
                 )
-            )
-            pid = self.start_worker(job_spec)
-            if pid is not None:
-                num_started += 1
-        run_end = datetime.datetime.now()
-        if num_started:
-            output += "Started {} job(s) in {}\n".format(
-                num_started, run_end - run_start
-            )
+                pid = self.start_worker(job_spec)
+                if pid is not None:
+                    num_started += 1
+            run_end = datetime.datetime.now()
+            if num_started:
+                output += "Started {} job(s) in {}\n".format(
+                    num_started, run_end - run_start
+                )
+            else:
+                output += "No jobs started.\n"
+        except Exception as error:
+            self.on_error(error)
+            raise error
         else:
-            output += "No jobs started.\n"
+            self.on_success()
         return output
 
     @send_errors_to_sentry
@@ -235,3 +245,31 @@ class CronScheduler(BaseCronObject):
     def resume_workers(self):
         """Resumes killed workers"""
         return self.cron_worker.resume()
+
+    # Cron monitoring implementation
+
+    def before_start(self):
+        """Method is used to notify Cronitor just before cron scheduler is
+        about to start. Works if `CRON_SCHEDULER_CRONITOR_ID` setting is
+        provided, else does nothing.
+        """
+        if self.cronitor_id:
+            self.cronitor.run(self.cronitor_id)
+
+    def on_success(self):
+        """Method is used to notify Cronitor just after cron scheduler
+        finishes work without exception. Works if `CRON_SCHEDULER_CRONITOR_ID`
+        setting is provided, else does nothing.
+        """
+        if self.cronitor_id:
+            self.cronitor.complete(self.cronitor_id)
+
+    def on_error(self, error):
+        """Method is used to notify Cronitor just after an exception is caught
+        on cron scheduler `run`. Works if `CRON_SCHEDULER_CRONITOR_ID` setting
+        is provided, else does nothing.
+        """
+        if self.cronitor_id:
+            message = format_exception(error)
+            self.logger.error(message)
+            self.cronitor.fail(self.cronitor_id, msg=message)
