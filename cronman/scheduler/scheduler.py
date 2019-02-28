@@ -81,7 +81,7 @@ class CronScheduler(BaseCronObject):
             self.warning(
                 CronSchedulerNoJobs(
                     "Scheduler has no jobs to start. "
-                    "Please verify settings.CRON_JOBS_MODULE."
+                    "Please verify settings.CRONMAN_JOBS_MODULE."
                 )
             )
 
@@ -250,24 +250,25 @@ class CronScheduler(BaseCronObject):
 
     def before_start(self):
         """Method is used to notify Cronitor just before cron scheduler is
-        about to start. Works if `CRON_SCHEDULER_CRONITOR_ID` setting is
-        provided, else does nothing.
+        about to start. Works if `CRONMAN_CRON_SCHEDULER_CRONITOR_ID` setting
+        is provided, else does nothing.
         """
         if self.cronitor_id:
             self.cronitor.run(self.cronitor_id)
 
     def on_success(self):
         """Method is used to notify Cronitor just after cron scheduler
-        finishes work without exception. Works if `CRON_SCHEDULER_CRONITOR_ID`
-        setting is provided, else does nothing.
+        finishes work without exception. Works if
+        `CRONMAN_CRON_SCHEDULER_CRONITOR_ID` setting is provided, else does
+        nothing.
         """
         if self.cronitor_id:
             self.cronitor.complete(self.cronitor_id)
 
     def on_error(self, error):
         """Method is used to notify Cronitor just after an exception is caught
-        on cron scheduler `run`. Works if `CRON_SCHEDULER_CRONITOR_ID` setting
-        is provided, else does nothing.
+        on cron scheduler `run`. Works if `CRONMAN_CRON_SCHEDULER_CRONITOR_ID`
+        setting is provided, else does nothing.
         """
         if self.cronitor_id:
             message = format_exception(error)
