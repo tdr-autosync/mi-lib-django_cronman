@@ -55,6 +55,9 @@ class AppSettings(object):
     CRONMAN_RUN_CRON_TASKS_CRONITOR_ID = Setting(
         "CRONMAN_RUN_CRON_TASKS_CRONITOR_ID", None
     )  # type: Optional[Text]
+    CRONMAN_CRON_SCHEDULER_CRONITOR_ID = Setting(
+        "CRONMAN_CRON_SCHEDULER_CRONITOR_ID", None
+    )  # type: Optional[Text]
     CRONMAN_CLEAN_CRON_TASKS_CRONITOR_ID = Setting(
         "CRONMAN_CLEAN_CRON_TASKS_CRONITOR_ID", None
     )  # type: Optional[Text]
