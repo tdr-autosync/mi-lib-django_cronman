@@ -255,13 +255,13 @@ If `settings.CRONMAN_RAVEN_CMD` is defined, the scheduler will use it as executi
 ## Cron Tasks - running cron jobs from Admin area
 
 Some cron jobs can be requested to start from Admin area: **Admin > Cron > Cron Tasks**
-To add a cron job class to the list in Admin we need to set `run_as_task` flag:
+To add a cron job class to the list in Admin we need to set `ALLOWED_CRON_TASKS` setting:
 
 ```python
 
-class HelloWorld(BaseCronJob):
-    """Demo Cron Job class running from Admin"""
-    run_as_task = True
+ALLOWED_CRON_TASKS = (
+    'HelloWorld',
+)
 ```
 To request another run of given cron job we can just create a new `CronTask` record in Admin.
 Cron job `RunCronTasks` started every 4 minutes by the scheduler will spawn a separate worker process for each pending Cron Task.
