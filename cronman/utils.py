@@ -24,6 +24,7 @@ from cronman.config import app_settings
 
 MYPY = False
 if MYPY:
+    # pylint: disable=unused-import
     from typing import Union, Text, TypeVar
 
     T = TypeVar("T")
@@ -32,7 +33,7 @@ logger = logging.getLogger("cronman.command")
 
 
 PARAM_PATTERN = re.compile(
-    "(\s*(?P<key>[\w\d_\-]*)\s*=\s*)?((?P<value>(\"[^\"]*\"|'[^']*'|[^,]*)),?)"
+    r"(\s*(?P<key>[\w\d_\-]*)\s*=\s*)?((?P<value>(\"[^\"]*\"|'[^']*'|[^,]*)),?)"
 )
 
 
@@ -188,7 +189,7 @@ def date_param(value, default=None):
 def list_param(
     value,
     default=None,
-    delimiter="\s+",
+    delimiter=r"\s+",
     strip=True,
     skip_empty=True,
     replace_map=None,
@@ -223,7 +224,7 @@ def flag_param(value, flag, flags):
     """
     value = bool_param(value)
     if value is None:
-        flags = list_param(flags, delimiter="[\s;,\-\|]+")
+        flags = list_param(flags, delimiter=r"[\s;,\-\|]+")
         value = flag in flags
     return value
 
@@ -322,7 +323,12 @@ def execute_pipe(*args_list, **kwargs):
     of the last process.
     Blocking call.
     """
-    assert len(args_list) > 1
+    num_args = len(args_list)
+    if num_args < 2:
+        raise AssertionError(
+            "execute_pipe requires at least 2 positional arguments, "
+            "got {}.".format(num_args)
+        )
     prev_process = last_process = None
     for args in args_list:
         prev_process = last_process

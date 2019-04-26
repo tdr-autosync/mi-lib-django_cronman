@@ -7,6 +7,7 @@ import datetime
 
 import mock
 
+from cronman.exceptions import CronJobNotRegistered
 from cronman.scheduler import CronScheduler
 from cronman.tests.base import (
     TEMP_FILE,
@@ -33,6 +34,88 @@ class CronSchedulerTestCase(BaseCronTestCase):
         self.assertIn("No jobs started.\n", output)
         mock_start.assert_not_called()
         mock_cron_worker.return_value.resume.assert_not_called()
+
+    @override_cron_settings(
+        CRONMAN_JOBS_MODULE=None,
+        CRONMAN_CRON_SCHEDULER_CRONITOR_ID=None,
+    )
+    @mock.patch("cronman.monitor.Cronitor.complete")
+    @mock.patch("cronman.monitor.Cronitor.fail")
+    @mock.patch("cronman.monitor.Cronitor.run")
+    def test_run_cronitor_disabled_no_exceptions(
+        self, mock_cronitor_run, mock_cronitor_fail, mock_cronitor_complete
+    ):
+        """Test for CronScheduler.run method - with disabled cronitor calls
+        and when there are no exceptions raised that means scheduler will only
+        enter in CronScheduler.before_start and CronScheduler.on_success.
+        """
+        scheduler = CronScheduler()
+        scheduler.run()
+        mock_cronitor_run.assert_not_called()
+        mock_cronitor_fail.assert_not_called()
+        mock_cronitor_complete.assert_not_called()
+
+    @override_cron_settings(
+        CRONMAN_JOBS_MODULE=None,
+        CRONMAN_CRON_SCHEDULER_CRONITOR_ID="<test-cronitor-id>",
+    )
+    @mock.patch("cronman.monitor.Cronitor.complete")
+    @mock.patch("cronman.monitor.Cronitor.fail")
+    @mock.patch("cronman.monitor.Cronitor.run")
+    def test_run_cronitor_enabled_no_exceptions(
+        self, mock_cronitor_run, mock_cronitor_fail, mock_cronitor_complete
+    ):
+        """Test for CronScheduler.run method - with enabled cronitor calls
+        and when there are no exceptions raised that means scheduler will only
+        enter in CronScheduler.before_start and CronScheduler.on_success.
+        """
+        scheduler = CronScheduler()
+        scheduler.run()
+        mock_cronitor_run.assert_called_once()
+        mock_cronitor_fail.assert_not_called()
+        mock_cronitor_complete.assert_called_once()
+
+    @override_cron_settings(
+        CRONMAN_CRON_SCHEDULER_CRONITOR_ID=None,
+        CRONMAN_JOBS_MODULE="cronman.tests.cron_jobs_failing",
+    )
+    @mock.patch("cronman.monitor.Cronitor.complete")
+    @mock.patch("cronman.monitor.Cronitor.fail")
+    @mock.patch("cronman.monitor.Cronitor.run")
+    def test_run_cronitor_disabled_with_exceptions(
+        self, mock_cronitor_run, mock_cronitor_fail, mock_cronitor_complete
+    ):
+        """Test for CronScheduler.run method - with disabled cronitor calls
+        and when there are exceptions raised that means scheduler will only
+        enter in CronScheduler.before_start and CronScheduler.on_error.
+        """
+        with self.assertRaises(CronJobNotRegistered):
+            scheduler = CronScheduler()
+            scheduler.run()
+        mock_cronitor_run.assert_not_called()
+        mock_cronitor_fail.assert_not_called()
+        mock_cronitor_complete.assert_not_called()
+
+    @override_cron_settings(
+        CRONMAN_CRON_SCHEDULER_CRONITOR_ID="<test>",
+        CRONMAN_JOBS_MODULE="cronman.tests.cron_jobs_failing",
+    )
+    @mock.patch("cronman.monitor.Cronitor.complete")
+    @mock.patch("cronman.monitor.Cronitor.fail")
+    @mock.patch("cronman.monitor.Cronitor.run")
+    def test_run_cronitor_enabled_with_exceptions(
+        self, mock_cronitor_run, mock_cronitor_fail, mock_cronitor_complete
+    ):
+        """Test for CronScheduler.run method - with disabled cronitor calls
+        and when there are no exceptions raised that means scheduler will only
+        enter in CronScheduler.before_start and CronScheduler.on_error.
+        """
+        with self.assertRaises(CronJobNotRegistered):
+            scheduler = CronScheduler()
+            scheduler.run()
+        mock_cronitor_run.assert_called_once()
+        mock_cronitor_fail.assert_called_once()
+        mock_cronitor_complete.assert_not_called()
 
     @override_cron_settings()
     @mock.patch("cronman.scheduler.scheduler.CronSpawner.start_worker")

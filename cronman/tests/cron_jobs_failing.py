@@ -3,4 +3,6 @@
 
 from __future__ import unicode_literals
 
-__version__ = "1.1.0"
+CRON_JOBS = (("*/2 * * * *", "SomethingNotExisting"),)
+
+ALLOWED_CRON_TASKS = ()

@@ -31,9 +31,11 @@ class BaseCronWorkerFile(object):
         parts = [name]
         if args or kwargs:
             params_bytes_repr = force_bytes(repr((args, kwargs)))
-            parts.append(hashlib.md5(params_bytes_repr).hexdigest()[:10])
+            parts.append(
+                hashlib.md5(params_bytes_repr).hexdigest()[:10]  # nosec
+            )
         if random:
-            parts.append(hashlib.md5(os.urandom(16)).hexdigest()[:10])
+            parts.append(hashlib.md5(os.urandom(16)).hexdigest()[:10])  # nosec
         return "_".join(parts)
 
     @classmethod

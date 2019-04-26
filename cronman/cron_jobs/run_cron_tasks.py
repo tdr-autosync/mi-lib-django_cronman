@@ -7,6 +7,7 @@ from django.db import connections
 from django.utils import timezone
 from django.utils.functional import cached_property
 
+from cronman.config import app_settings
 from cronman.job import BaseCronJob
 from cronman.models import CronTask
 from cronman.spawner import CronSpawner
@@ -19,7 +20,7 @@ class RunCronTasks(BaseCronJob):
     """
 
     lock_ignore_errors = True
-    cronitor_id = "zg9G1G"
+    cronitor_id = app_settings.CRONMAN_RUN_CRON_TASKS_CRONITOR_ID
 
     @cached_property
     def cron_spawner(self):
@@ -62,13 +63,3 @@ class RunCronTasks(BaseCronJob):
     def start_cron_task(self, cron_task):
         """Starts worker for given CronTask"""
         return self.cron_spawner.start_worker(cron_task.job_spec())
-
-
-class MotoRunCronTasks(RunCronTasks):
-    """Starts worker processes for cron jobs requested to run in Admin
-    via CronTask model.
-
-    Moto-specific cron job.
-    """
-
-    cronitor_id = "t6bp0e"

@@ -10,6 +10,11 @@ __pycache__/
 # idea folder
 .idea/
 
+# eclipse project files
+.pydevproject
+.settings
+.project
+
 # credentials files
 credentials.txt
 
@@ -18,6 +23,7 @@ credentials.txt
 .eggs/
 dist/
 build/
+pip-wheel-metadata/
 
 # coverage
 .coverage

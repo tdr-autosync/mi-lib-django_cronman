@@ -12,7 +12,7 @@ Django app to define and manage periodic tasks at Python level.
 pip install django-cronman
 ```
 
-You can also install it with additonal dependecies to be able to use Cron Remote Manager.
+You can also install it with additional dependencies to be able to use Cron Remote Manager.
 
 ```bash
 pip install django-cronman[redis]
@@ -240,7 +240,7 @@ Scheduler command can be disabled temporarily:
 ```
 python manage.py cron_scheduler disable
 ```
-and reenabled later:
+and re-enabled later:
 ```
 python manage.py cron_scheduler enable
 ```
@@ -255,13 +255,18 @@ If `settings.CRONMAN_RAVEN_CMD` is defined, the scheduler will use it as executi
 ## Cron Tasks - running cron jobs from Admin area
 
 Some cron jobs can be requested to start from Admin area: **Admin > Cron > Cron Tasks**
-To add a cron job class to the list in Admin we need to set `run_as_task` flag:
+To add a cron job class to the list in Admin we need to set `ALLOWED_CRON_TASKS` setting:
 
 ```python
 
-class HelloWorld(BaseCronJob):
-    """Demo Cron Job class running from Admin"""
-    run_as_task = True
+ALLOWED_CRON_TASKS = (
+    'HelloWorld',
+)
 ```
 To request another run of given cron job we can just create a new `CronTask` record in Admin.
 Cron job `RunCronTasks` started every 4 minutes by the scheduler will spawn a separate worker process for each pending Cron Task.
+
+## Changelog
+
+2019-03-13 - 1.1.0 Add support for cronitor ping for cron_scheduler
+2019-02-25 - 1.0.0 Initial version released

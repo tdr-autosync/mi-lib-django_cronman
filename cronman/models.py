@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 
 import datetime
 
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.db import models
 from django.utils import timezone
 from django.utils.six import python_2_unicode_compatible
@@ -79,7 +79,10 @@ class CronTask(models.Model):
     pid = models.PositiveIntegerField(null=True, blank=True)
 
     user = models.ForeignKey(
-        User, null=True, blank=True, on_delete=models.SET_NULL
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
     )
     created_at = models.DateTimeField(null=True, auto_now_add=True)
     started_at = models.DateTimeField(null=True, blank=True)
