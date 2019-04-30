@@ -9,10 +9,10 @@ import re
 from django.core.management import call_command
 
 RESULT_PATTERN = re.compile(
-    "(?P<status>[A-Z]+): Processed (?P<job_spec>[\s\S]*)"
+    r"(?P<status>[A-Z]+): Processed (?P<job_spec>[\s\S]*)"
 )
 EXCEPTION_PATTERN = re.compile(
-    "(?P<exc_class_name>[\w\d+]+): (?P<exc_message>[\s\S]*)"
+    r"(?P<exc_class_name>[\w\d+]+): (?P<exc_message>[\s\S]*)"
 )
 
 

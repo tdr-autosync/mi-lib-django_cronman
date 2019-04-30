@@ -17,6 +17,8 @@ repos:
   - id: check-yaml
   - id: mixed-line-ending
   - id: end-of-file-fixer
+  - id: flake8
+    language_version: python2.7
 - repo: https://github.com/Lucas-C/pre-commit-hooks
   rev: v1.1.6
   hooks:
