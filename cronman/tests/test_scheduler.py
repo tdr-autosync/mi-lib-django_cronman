@@ -36,8 +36,7 @@ class CronSchedulerTestCase(BaseCronTestCase):
         mock_cron_worker.return_value.resume.assert_not_called()
 
     @override_cron_settings(
-        CRONMAN_JOBS_MODULE=None,
-        CRONMAN_CRON_SCHEDULER_CRONITOR_ID=None,
+        CRONMAN_JOBS_MODULE=None, CRONMAN_CRON_SCHEDULER_CRONITOR_ID=None
     )
     @mock.patch("cronman.monitor.Cronitor.complete")
     @mock.patch("cronman.monitor.Cronitor.fail")
