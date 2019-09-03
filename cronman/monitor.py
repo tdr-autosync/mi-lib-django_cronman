@@ -9,11 +9,11 @@ import logging
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.functional import cached_property
-from django.utils.html import strip_tags
 from django.utils.http import urlencode
-from django.utils.six.moves import html_parser as HTMLParser
 
 import requests
+
+from uh_core.htmltools import strip_tags
 
 from cronman.config import app_settings
 from cronman.exceptions import MissingDependency
@@ -149,8 +149,6 @@ class Slack(object):
 
     def _prepare_message(self, message):
         # slack don't process html entities
-        html_parser = HTMLParser.HTMLParser()
-        message = html_parser.unescape(message)
         # slack also don't render html itself
         message = strip_tags(message)
         return message
