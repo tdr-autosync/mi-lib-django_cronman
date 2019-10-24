@@ -11,8 +11,9 @@ cache:
 python:
   - "2.7"
   - "3.6"
+  - "3.7"
 install:
-  - pip install -U pip==19.0.3
+  - pip install -U pip setuptools
   - pip install -e .
   - pip install coverage
 script:
