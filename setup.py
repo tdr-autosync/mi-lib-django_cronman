@@ -133,7 +133,7 @@ setup(
     author_email="",
     packages=find_packages(),
     install_requires=[
-        "croniter==0.3.30",
+        "croniter < 0.4",
         "django < 2.0",
         "python-dateutil",
         "requests",
