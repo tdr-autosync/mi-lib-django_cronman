@@ -135,8 +135,8 @@ setup(
     install_requires=[
         "croniter < 0.4",
         "django < 2.0",
-        "python-dateutil < 2.7",
-        "requests >= 2.1",
+        "python-dateutil",
+        "requests",
         "typing",
     ],
     include_package_data=True,
