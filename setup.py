@@ -134,7 +134,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         "croniter < 0.4",
-        "django < 2.0",
+        "django < 3.0",
         "python-dateutil",
         "requests",
         "typing",
