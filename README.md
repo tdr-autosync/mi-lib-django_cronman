@@ -268,6 +268,7 @@ Cron job `RunCronTasks` started every 4 minutes by the scheduler will spawn a se
 
 ## Changelog
 
+2020-01-09 - 1.2.0 Django 2 compatibility.
 2019-04-30 - 1.1.1 Pre-commit.com hooks support. Docs update
 2019-03-13 - 1.1.0 Add support for cronitor ping for cron_scheduler
 2019-02-25 - 1.0.0 Initial version released
