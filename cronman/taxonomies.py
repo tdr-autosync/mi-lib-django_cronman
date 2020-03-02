@@ -85,3 +85,9 @@ class CronSchedulerStatus(object):
 
     DISABLED = "disabled"
     ENABLED = "enabled"
+
+
+class CronTaskExecutionOrder(object):
+    FIFO = "start_at"
+    LIFO = "-start_at"
+

@@ -12,6 +12,7 @@ from cronman.job import BaseCronJob
 from cronman.models import CronTask
 from cronman.spawner import CronSpawner
 from cronman.utils import cron_jobs_module_config
+from cronman.taxonomies import CronTaskExecutionOrder
 
 
 class RunCronTasks(BaseCronJob):
@@ -52,10 +53,14 @@ class RunCronTasks(BaseCronJob):
         allowed_tasks = cron_jobs_module_config(
             "ALLOWED_CRON_TASKS", default=()
         )
+        default = CronTaskExecutionOrder.FIFO
+        order_by = app_settings.CRONMAN_CRON_TASKS_EXECUTION_ORDER or default
+    
         cron_tasks = list(
             CronTask.objects.pending()
             .filter(start_at__lte=timezone.now())
             .filter(cron_job__in=allowed_tasks)
+            .order_by(order_by)
         )
         connections.close_all()  # close db connections
         return cron_tasks

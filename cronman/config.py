@@ -111,5 +111,9 @@ class AppSettings(object):
         "cronman.redis_client.get_strict_redis_default",
     )  # type: Text
 
+    CRONMAN_CRON_TASKS_EXECUTION_ORDER = Setting(
+        "CRONMAN_CRON_TASKS_EXECUTION_ORDER", ""
+    )  # type: Text
+
 
 app_settings = AppSettings()

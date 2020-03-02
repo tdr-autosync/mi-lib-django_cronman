@@ -10,7 +10,7 @@ from django.utils import timezone
 import mock
 
 from cronman.models import CronTask
-from cronman.taxonomies import CronTaskStatus
+from cronman.taxonomies import CronTaskStatus, CronTaskExecutionOrder
 from cronman.tests.base import (
     BaseCronTestCase,
     create_pid_file,
@@ -81,6 +81,78 @@ class RunCronTasksTestCase(BaseCronTestCase):
             ]
         )
         mock_close_all.assert_called_once()
+
+    @override_cron_settings()
+    @mock.patch("cronman.cron_jobs.run_cron_tasks.connections.close_all")
+    @mock.patch("cronman.cron_jobs.run_cron_tasks.CronSpawner.start_worker")
+    @mock.patch("cronman.job.logging.getLogger")
+    def test_fifo_execution(self, mock_get_logger, mock_start, mock_close_all):
+        """Test for RunCronTasks - FIFO order."""
+
+        now = timezone.now()
+        name = "ClassLockedSleep"
+
+        # Pending Tasks:
+        task_1 = CronTask.objects.run_now(
+            name, now=now - datetime.timedelta(minutes=20)
+        )[0]
+        task_1.mark_as_queued()
+        task_2 = CronTask.objects.run_now(
+            name, now=now - datetime.timedelta(minutes=45)
+        )[0]
+        task_3 = CronTask.objects.run_now(
+            name, now=now - datetime.timedelta(minutes=10)
+        )[0]
+
+        expected_order = [task_2, task_1, task_3]
+        expected_order_calls = []
+
+        for cron in expected_order:
+            self.assertTrue(call_worker("RunCronTasks").ok)
+
+            expected_order_calls.append(
+                mock.call("{}:task_id={}".format(name, cron.pk))
+            )
+
+        mock_start.assert_has_calls(expected_order_calls)
+        self.assertEqual(mock_close_all.call_count, 3)
+
+    @override_cron_settings(
+        CRONMAN_CRON_TASKS_EXECUTION_ORDER=CronTaskExecutionOrder.LIFO
+    )
+    @mock.patch("cronman.cron_jobs.run_cron_tasks.connections.close_all")
+    @mock.patch("cronman.cron_jobs.run_cron_tasks.CronSpawner.start_worker")
+    @mock.patch("cronman.job.logging.getLogger")
+    def test_lifo_execution(self, mock_get_logger, mock_start, mock_close_all):
+        """Test for RunCronTasks - LIFO order."""
+
+        now = timezone.now()
+        name = "ClassLockedSleep"
+
+        # Pending Tasks:
+        task_1 = CronTask.objects.run_now(
+            name, now=now - datetime.timedelta(minutes=20)
+        )[0]
+        task_1.mark_as_queued()
+        task_2 = CronTask.objects.run_now(
+            name, now=now - datetime.timedelta(minutes=45)
+        )[0]
+        task_3 = CronTask.objects.run_now(
+            name, now=now - datetime.timedelta(minutes=10)
+        )[0]
+
+        expected_order = [task_3, task_1, task_2]
+        expected_order_calls = []
+
+        for cron in expected_order:
+            self.assertTrue(call_worker("RunCronTasks").ok)
+
+            expected_order_calls.append(
+                mock.call("{}:task_id={}".format(name, cron.pk))
+            )
+
+        mock_start.assert_has_calls(expected_order_calls)
+        self.assertEqual(mock_close_all.call_count, 3)
 
 
 class CleanCronTasksTestCase(BaseCronTestCase):
