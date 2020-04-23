@@ -269,7 +269,7 @@ class CronWorker(BaseCronObject):
         cronitor_id = self.cronitor_id or cron_job_class.cronitor_id
         message = format_exception(error)
         self.logger.error(message)
-        self.sentry.capture_exception()
+        self.sentry.capture_exception(error)
         if cronitor_id and cron_job_class.cronitor_ping_fail:
             self.cronitor.fail(cronitor_id, msg=message)
         if self.debug:

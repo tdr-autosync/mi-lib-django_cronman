@@ -140,8 +140,8 @@ setup(
         "typing",
     ],
     include_package_data=True,
-    tests_require=["mock", "raven < 5.33", "redis < 2.11"],
-    extras_require={"redis": ["redis < 2.11"], "sentry": ["raven < 5.33"]},
+    tests_require=["mock", "sentry_sdk", "redis < 2.11"],
+    extras_require={"redis": ["redis < 2.11"], "sentry": ["sentry_sdk"]},
     cmdclass={
         "test": TestCommand,
         "shell": ShellCommand,
@@ -149,6 +149,7 @@ setup(
         "migrate": MigrateCommand,
     },
     classifiers=[
+        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 2.7",
         "License :: OSI Approved :: BSD License",

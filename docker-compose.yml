@@ -1,0 +1,10 @@
+version: "3.7"
+services:
+  cronman:
+    container_name: cronman
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cronman:v1
+    volumes:
+      - ${UNHAGGLE_ROOT}/django-cronman:/application/cronman

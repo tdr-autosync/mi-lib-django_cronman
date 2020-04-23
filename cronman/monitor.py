@@ -3,17 +3,16 @@
 
 from __future__ import unicode_literals
 
-import contextlib
 import logging
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
-from django.utils.functional import cached_property
 from django.utils.html import strip_tags
 from django.utils.http import urlencode
-from django.utils.six.moves import html_parser as HTMLParser
 
 import requests
+
+from six.moves.html_parser import HTMLParser
 
 from cronman.config import app_settings
 from cronman.exceptions import MissingDependency
@@ -22,25 +21,40 @@ from cronman.utils import bool_param, chunks, config, format_exception
 logger = logging.getLogger("cronman.command")
 
 
-def get_raven_client():
-    """Creates raven.Client instance configured to work with cron jobs."""
-    # NOTE: this function uses settings and therefore it shouldn't be called
-    #       at module level.
-    try:
-        import raven
-    except ImportError:
-        raise MissingDependency(
-            "Unable to import raven. Sentry monitor requires this dependency."
-        )
+_sentry_sdk = None
 
-    for setting in ("CRONMAN_SENTRY_CONFIG", "SENTRY_CONFIG", "RAVEN_CONFIG"):
-        client_config = getattr(settings, setting, None)
-        if client_config is not None:
-            break
-    else:
-        client_config = app_settings.CRONMAN_SENTRY_CONFIG
 
-    return raven.Client(**client_config)
+def _get_sentry_sdk():
+    global _sentry_sdk
+
+    if _sentry_sdk is None:
+        """Creates raven.Client instance configured to work with cron jobs."""
+        # NOTE: this function uses settings and therefore it shouldn't be called
+        #       at module level.
+        try:
+            _sentry_sdk = __import__("sentry_sdk")
+            DjangoIntegration = __import__(
+                "sentry_sdk.integrations.django"
+            ).integrations.django.DjangoIntegration
+        except ImportError:
+            raise MissingDependency(
+                "Unable to import sentry_sdk. Sentry monitor requires this dependency."
+            )
+
+        for setting in (
+            "CRONMAN_SENTRY_CONFIG",
+            "SENTRY_CONFIG",
+            "RAVEN_CONFIG",
+        ):
+            client_config = getattr(settings, setting, None)
+            if client_config is not None:
+                break
+        else:
+            client_config = app_settings.CRONMAN_SENTRY_CONFIG
+
+        _sentry_sdk.init(integrations=[DjangoIntegration()], **client_config)
+
+    return _sentry_sdk
 
 
 class Cronitor(object):
@@ -92,36 +106,15 @@ class Sentry(object):
         self.enabled = bool_param(config("CRONMAN_SENTRY_ENABLED"))
         self.raven_cmd = app_settings.CRONMAN_RAVEN_CMD
 
-    @cached_property
-    def raven_client(self):
-        return get_raven_client()
+    @property
+    def _sentry_sdk(self):
+        return _get_sentry_sdk()
 
-    def capture_exceptions(self):
+    def capture_exception(self, exception):
         if self.enabled:
-            context_manager = self.raven_client.capture_exceptions
+            self._sentry_sdk.capture_exception(exception)
         else:
-            context_manager = self._get_capture_exceptions_noop()
-        return context_manager()
-
-    def capture_exception(self):
-        if self.enabled:
-            self.raven_client.captureException()
-        else:
-            self._capture_exception_noop()
-
-    def _capture_exception_noop(self):
-        self.logger.debug("Sentry request ignored (disabled in settings).")
-
-    def _get_capture_exceptions_noop(self):
-        @contextlib.contextmanager
-        def _capture_exceptions_noop():
-            try:
-                yield
-            except Exception:
-                self._capture_exception_noop()
-                raise
-
-        return _capture_exceptions_noop
+            self.logger.debug("Sentry request ignored (disabled in settings).")
 
 
 def send_errors_to_sentry(method):
@@ -130,9 +123,11 @@ def send_errors_to_sentry(method):
     """
 
     def _method(self, *args, **kwargs):
-        with self.sentry.capture_exceptions():
-            output = method(self, *args, **kwargs)
-        return output
+        try:
+            return method(self, *args, **kwargs)
+        except Exception as e:
+            self.sentry.capture_exception(e)
+            raise
 
     return _method
 
@@ -149,7 +144,7 @@ class Slack(object):
 
     def _prepare_message(self, message):
         # slack don't process html entities
-        html_parser = HTMLParser.HTMLParser()
+        html_parser = HTMLParser()
         message = html_parser.unescape(message)
         # slack also don't render html itself
         message = strip_tags(message)
