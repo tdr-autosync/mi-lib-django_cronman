@@ -137,6 +137,7 @@ setup(
         "django < 3.0",
         "python-dateutil",
         "requests",
+        "six",
         "typing",
     ],
     include_package_data=True,

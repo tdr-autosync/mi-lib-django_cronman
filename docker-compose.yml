@@ -7,4 +7,4 @@ services:
       dockerfile: Dockerfile
     image: cronman:v1
     volumes:
-      - ${UNHAGGLE_ROOT}/django-cronman:/application/cronman
+      - ${CRONMAN_REPO}/application/cronman

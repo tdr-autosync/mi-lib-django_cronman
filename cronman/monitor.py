@@ -7,6 +7,7 @@ import logging
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
+from django.utils.functional import cached_property
 from django.utils.html import strip_tags
 from django.utils.http import urlencode
 
@@ -21,40 +22,32 @@ from cronman.utils import bool_param, chunks, config, format_exception
 logger = logging.getLogger("cronman.command")
 
 
-_sentry_sdk = None
-
-
 def _get_sentry_sdk():
-    global _sentry_sdk
+    """Creates raven.Client instance configured to work with cron jobs."""
+    # NOTE: this function uses settings and therefore it shouldn't be called
+    #       at module level.
+    try:
+        sentry_sdk = __import__("sentry_sdk")
+        DjangoIntegration = __import__(
+            "sentry_sdk.integrations.django"
+        ).integrations.django.DjangoIntegration
+    except ImportError:
+        raise MissingDependency(
+            "Unable to import sentry_sdk. Sentry monitor requires this dependency."
+        )
 
-    if _sentry_sdk is None:
-        """Creates raven.Client instance configured to work with cron jobs."""
-        # NOTE: this function uses settings and therefore it shouldn't be called
-        #       at module level.
-        try:
-            _sentry_sdk = __import__("sentry_sdk")
-            DjangoIntegration = __import__(
-                "sentry_sdk.integrations.django"
-            ).integrations.django.DjangoIntegration
-        except ImportError:
-            raise MissingDependency(
-                "Unable to import sentry_sdk. Sentry monitor requires this dependency."
-            )
+    for setting in (
+        "CRONMAN_SENTRY_CONFIG",
+        "SENTRY_CONFIG",
+        "RAVEN_CONFIG",
+    ):
+        client_config = getattr(settings, setting, None)
+        if client_config is not None:
+            break
+    else:
+        client_config = app_settings.CRONMAN_SENTRY_CONFIG
 
-        for setting in (
-            "CRONMAN_SENTRY_CONFIG",
-            "SENTRY_CONFIG",
-            "RAVEN_CONFIG",
-        ):
-            client_config = getattr(settings, setting, None)
-            if client_config is not None:
-                break
-        else:
-            client_config = app_settings.CRONMAN_SENTRY_CONFIG
-
-        _sentry_sdk.init(integrations=[DjangoIntegration()], **client_config)
-
-    return _sentry_sdk
+    sentry_sdk.init(integrations=[DjangoIntegration()], **client_config)
 
 
 class Cronitor(object):
@@ -106,7 +99,7 @@ class Sentry(object):
         self.enabled = bool_param(config("CRONMAN_SENTRY_ENABLED"))
         self.raven_cmd = app_settings.CRONMAN_RAVEN_CMD
 
-    @property
+    @cached_property
     def _sentry_sdk(self):
         return _get_sentry_sdk()
 
