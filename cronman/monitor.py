@@ -33,7 +33,8 @@ def _get_sentry_sdk():
         ).integrations.django.DjangoIntegration
     except ImportError:
         raise MissingDependency(
-            "Unable to import sentry_sdk. Sentry monitor requires this dependency."
+            "Unable to import sentry_sdk. "
+            "Sentry monitor requires this dependency."
         )
 
     for setting in (
