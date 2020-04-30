@@ -49,6 +49,7 @@ def _get_sentry_sdk():
         client_config = app_settings.CRONMAN_SENTRY_CONFIG
 
     sentry_sdk.init(integrations=[DjangoIntegration()], **client_config)
+    return sentry_sdk
 
 
 class Cronitor(object):
