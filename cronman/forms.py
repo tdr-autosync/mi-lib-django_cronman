@@ -5,7 +5,8 @@ from __future__ import unicode_literals
 
 from django import forms
 from django.utils.functional import cached_property
-from django.utils.six import text_type
+
+from six import text_type
 
 from cronman.job import cron_job_registry
 from cronman.models import CronTask
