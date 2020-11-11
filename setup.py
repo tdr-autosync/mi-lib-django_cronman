@@ -141,8 +141,12 @@ setup(
         "typing ; python_version < '3.0'",
     ],
     include_package_data=True,
-    tests_require=["mock", "sentry_sdk", "redis < 2.11"],
-    extras_require={"redis": ["redis < 2.11"], "sentry": ["sentry_sdk"]},
+    tests_require=["mock", "sentry_sdk", "redis < 2.11", "newrelic"],
+    extras_require={
+        "newrelic": ["newrelic"],
+        "redis": ["redis < 2.11"],
+        "sentry": ["sentry_sdk"]
+    },
     cmdclass={
         "test": TestCommand,
         "shell": ShellCommand,

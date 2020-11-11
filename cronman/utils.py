@@ -22,6 +22,7 @@ from six import text_type
 from six.moves import range  # pylint: disable=E0401, E0611
 
 from cronman.config import app_settings
+from cronman.exceptions import MissingDependency
 
 MYPY = False
 if MYPY:
@@ -473,3 +474,19 @@ class TabularFormatter(object):
             "{}: {}".format(force_text(key), force_text(value))
             for key, value in data.items()
         )
+
+
+def newrelic_monitor_background_task(application=None, name=None, group=None):
+    """Check for newrelic dependency and wrap provided function parameter with
+    `agent.background_task` decorator.
+    """
+    try:
+        from newrelic import agent
+    except ImportError:
+        raise MissingDependency(
+            "Unable to import newrelic.agent. "
+            "newrelic_monitor_background_task requires this dependency."
+        )
+    def inner(wrapper):
+        return agent.background_task(application=application, name=name, group=group)(wrapper)
+    return inner

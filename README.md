@@ -16,6 +16,7 @@ You can also install it with additional dependencies to be able to use Cron Remo
 
 ```bash
 pip install django-cronman[redis]
+pip install django-cronman[newrelic]
 ```
 
 ## Define a new cron job
@@ -127,6 +128,17 @@ We may disable sending optional "RUN" and "FAIL" pings to Cronitor when cron job
 **Important note:**
 When adding a new monitor in Cronitor dashboard, please use type **heartbeat**. Avoid using **cron job** monitors, as they're sending false-positive alerts "Has not run on schedule".
 
+## Configure Newrelic support
+
+1. Install `pip install django-cronman[newrelic]`.
+2. Use `cronman.utils.newrelic_monitor_background_task` and wrap it around your cronjob's `run` method like so:
+```python
+class HelloWorld(BaseCronJob):
+    """Demo Cron Job class"""
+    @newrelic_monitor_background_task(name="HelloWorld")
+    def run(self, *args, **kwargs):
+        pass
+```
 
 ## Configure lock
 

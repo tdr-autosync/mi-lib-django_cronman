@@ -10,6 +10,8 @@ import mock
 from cronman import utils
 from cronman.tests.base import TEST_CRONMAN_DATA_DIR, BaseCronTestCase
 
+from newrelic.common.object_wrapper import _NRBoundFunctionWrapper
+
 
 class CronUtilsTestCase(BaseCronTestCase):
     """Tests for `cronman.utils` module"""
@@ -395,3 +397,17 @@ class CronUtilsTestCase(BaseCronTestCase):
             kwargs={"param": 0},
         )
         mock_pid_file_locked.assert_called_once_with(mock_pid_file, 1)
+
+    def test_newrelic_monitor_background_task(self):
+        """Test for `newrelic_monitor_background_task` wrapping run method.
+        and returning proper wrapper object.
+        """
+        class FakeCronJob(object):
+            @utils.newrelic_monitor_background_task(name="FakeCronJob")
+            def run(self, *args, **kwargs):
+                pass
+
+        cronjob_instance = FakeCronJob()
+        self.assertTrue(
+            isinstance(cronjob_instance.run, _NRBoundFunctionWrapper)
+        )
