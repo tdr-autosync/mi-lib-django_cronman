@@ -31,4 +31,4 @@ def get_strict_redis_default(host=None, port=None, db=None):
     port = port or app_settings.CRONMAN_REDIS_PORT
     db = db if db is not None else app_settings.CRONMAN_REDIS_DB
 
-    return StrictRedis(host=host, port=port, db=db)
+    return StrictRedis(host=host, port=port, db=db, decode_reponses=True)
