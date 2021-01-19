@@ -14,10 +14,12 @@ def get_strict_redis(host=None, port=None, db=None):
     defined in settings (`CRONMAN_REDIS_CONSTRUCTOR`).
     """
     _get_strict_redis = import_string(app_settings.CRONMAN_REDIS_CONSTRUCTOR)
-    return _get_strict_redis(host=host, port=port, db=db)
+    return _get_strict_redis(
+        host=host, port=port, db=db, decode_responses=True
+    )
 
 
-def get_strict_redis_default(host=None, port=None, db=None):
+def get_strict_redis_default(host=None, port=None, db=None, **kwargs):
     """Retrieve Redis client object (StrictRedis) - default implementation."""
     try:
         from redis import StrictRedis
@@ -31,4 +33,4 @@ def get_strict_redis_default(host=None, port=None, db=None):
     port = port or app_settings.CRONMAN_REDIS_PORT
     db = db if db is not None else app_settings.CRONMAN_REDIS_DB
 
-    return StrictRedis(host=host, port=port, db=db, decode_reponses=True)
+    return StrictRedis(host=host, port=port, db=db, **kwargs)

@@ -6,6 +6,8 @@ from __future__ import unicode_literals
 import os
 import socket
 
+from cronman.remote_manager import CronRemoteManager
+from django.conf import settings
 from django.core.management import CommandError, call_command
 
 import mock
@@ -27,7 +29,7 @@ from cronman.tests.base import (
 from cronman.tests.cron_jobs import CRON_JOBS
 from cronman.tests.tools import call_worker
 from cronman.worker import CronWorkerPIDFile, ProcessManager
-
+import redis
 
 class SchedulerCommandTestCase(BaseCronTestCase):
     """Tests for `cron_scheduler` command"""
@@ -67,41 +69,39 @@ class SchedulerCommandTestCase(BaseCronTestCase):
         mock_start.assert_not_called()
         mock_cron_worker.return_value.resume.assert_not_called()
 
-    @override_cron_settings(CRONMAN_REMOTE_MANAGER_ENABLED=True)
-    @mock.patch("cronman.scheduler.scheduler.CronSpawner.start_worker")
+    @override_cron_settings(
+        CRONMAN_REMOTE_MANAGER_ENABLED=True,
+        CRONMAN_REDIS_HOST=os.environ.get("CRONMAN_REDIS_HOST", "127.0.0.1")
+    )
     @mock.patch(
         "cronman.scheduler.scheduler.CronScheduler.cron_worker",
         new_callable=mock.PropertyMock,
     )
-    @mock.patch(
-        "cronman.remote_manager.CronRemoteManager.redis_client",
-        new_callable=mock.PropertyMock,
-    )
-    def test_run_disabled_remotely(
-        self, mock_redis, mock_cron_worker, mock_start
-    ):
+    def test_run_disabled_remotely(self, mock_cron_worker):
         """Test for running scheduler when disable request has been sent
         through Remote Manager.
         """
+        key = CronRemoteManager().get_status_key('ALL')
+        self.assertEqual(key, "cron_scheduler:status:ALL")
+        r = redis.Redis(
+            host=settings.CRONMAN_REDIS_HOST,
+            decode_responses=True
+        )
 
-        def redis_get(key, *args, **kwargs):
-            """Return CronSchedulerStatus.DISABLED for current host only."""
-            if key == "cron_scheduler:status:{}".format(socket.gethostname()):
-                value = CronSchedulerStatus.DISABLED
-            else:
-                value = None
-            return value
+        # Disable the workers remotely (via redis)
+        output = call_command("cron_remote_manager", "disable", "ALL")
+        self.assertEqual(output, "disable ALL -> True")
+        self.assertEqual(r.get(key), CronSchedulerStatus.DISABLED)
 
-        mock_redis.return_value.get.side_effect = redis_get
-        mock_redis.return_value.lpop.return_value = None  # No remote KILL
-        output = call_command("cron_scheduler", "run") or ""
-        # Result should match "disable --workers":
+        # Try to run workers
+        output = call_command("cron_scheduler", "run")
+
+        # Check the that workers are disabled
         self.assertIn(
             "Scheduler disabled (lock file created, workers suspended).",
             output,
         )
         mock_cron_worker.return_value.suspend.assert_called_once()
-        mock_redis.return_value.delete.assert_called_once()
 
     @override_cron_settings(CRONMAN_REMOTE_MANAGER_ENABLED=True)
     @mock.patch("cronman.scheduler.scheduler.CronSpawner.start_worker")
