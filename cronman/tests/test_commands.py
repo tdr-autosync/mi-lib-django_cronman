@@ -6,7 +6,6 @@ from __future__ import unicode_literals
 import os
 import socket
 
-from cronman.remote_manager import CronRemoteManager
 from django.conf import settings
 from django.core.management import CommandError, call_command
 
@@ -14,6 +13,7 @@ import mock
 import redis
 
 from cronman.config import app_settings
+from cronman.remote_manager import CronRemoteManager
 from cronman.scheduler import CronScheduler
 from cronman.taxonomies import CronSchedulerStatus
 from cronman.tests.base import (
@@ -29,7 +29,7 @@ from cronman.tests.base import (
 from cronman.tests.cron_jobs import CRON_JOBS
 from cronman.tests.tools import call_worker
 from cronman.worker import CronWorkerPIDFile, ProcessManager
-import redis
+
 
 class SchedulerCommandTestCase(BaseCronTestCase):
     """Tests for `cron_scheduler` command"""
@@ -71,7 +71,7 @@ class SchedulerCommandTestCase(BaseCronTestCase):
 
     @override_cron_settings(
         CRONMAN_REMOTE_MANAGER_ENABLED=True,
-        CRONMAN_REDIS_HOST=os.environ.get("CRONMAN_REDIS_HOST", "127.0.0.1")
+        CRONMAN_REDIS_HOST=os.environ.get("CRONMAN_REDIS_HOST", "127.0.0.1"),
     )
     @mock.patch(
         "cronman.scheduler.scheduler.CronScheduler.cron_worker",
@@ -81,11 +81,10 @@ class SchedulerCommandTestCase(BaseCronTestCase):
         """Test for running scheduler when disable request has been sent
         through Remote Manager.
         """
-        key = CronRemoteManager().get_status_key('ALL')
+        key = CronRemoteManager().get_status_key("ALL")
         self.assertEqual(key, "cron_scheduler:status:ALL")
         r = redis.Redis(
-            host=settings.CRONMAN_REDIS_HOST,
-            decode_responses=True
+            host=settings.CRONMAN_REDIS_HOST, decode_responses=True
         )
 
         # Disable the workers remotely (via redis)
@@ -604,8 +603,7 @@ class WorkerCommandTestCase(BaseCronTestCase):
 
     @override_cron_settings()
     def test_clean_all_files_active(self):
-        """Test for cleaning dead/stalled files - all files active, no deletion
-        """
+        """Test for cleaning dead/stalled files - all files active, no deletion"""
         pid_1, pid_2, pid_3 = 1001, 1002, 1003
         pid_file_1 = create_pid_file("ParamsLockedSleep:seconds=10", pid_1)
         pid_file_2 = create_pid_file("ClassLockedSleep:seconds=10", pid_2)

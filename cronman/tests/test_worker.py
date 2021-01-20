@@ -77,8 +77,7 @@ class CronWorkerTestCase(BaseCronTestCase):
     @override_cron_settings()
     @mock.patch("cronman.cron_jobs.sleep.Sleep.run", side_effect=ValueError)
     def test_run_cron_job_error(self, mock_run):
-        """Test for CronWorker.run method - exception raised while processing
-        """
+        """Test for CronWorker.run method - exception raised while processing"""
         worker = CronWorker()
         output = worker.run("Sleep")
         self.assertIn("FAIL: Processed Sleep", output)
