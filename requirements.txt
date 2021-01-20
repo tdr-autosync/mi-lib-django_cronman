@@ -1,11 +1,9 @@
 croniter < 0.4
-# NOTE: django>=2.2 requires sqlite 3.8.3 and centos7 have only 3.7.X
 django < 2.2 ; python_version > '3.0'
 django < 2.0 ; python_version < '3.0'
 python-dateutil
 requests
 six
-typing ; python_version < '3.0'
 
 # Test dependencies
 coverage
