@@ -1,15 +1,15 @@
 repos:
 - repo: https://github.com/pre-commit/mirrors-isort
-  rev: master
+  rev: v5.7.0
   hooks:
   - id: isort
 - repo: https://github.com/ambv/black
-  rev: stable
+  rev: 20.8b1
   hooks:
   - id: black
     language_version: python3.6
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v2.0.0
+  rev: v3.4.0
   hooks:
   - id: trailing-whitespace
     args: [--markdown-linebreak-ext=md]
@@ -17,11 +17,13 @@ repos:
   - id: check-yaml
   - id: mixed-line-ending
   - id: end-of-file-fixer
-  - id: flake8
-    language_version: python2.7
 - repo: https://github.com/Lucas-C/pre-commit-hooks
-  rev: v1.1.6
+  rev: v1.1.9
   hooks:
   - id: forbid-crlf
   - id: remove-crlf
   - id: forbid-tabs
+- repo: https://gitlab.com/pycqa/flake8
+  rev: 3.8.4
+  hooks:
+  - id: flake8

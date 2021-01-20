@@ -1,8 +1,16 @@
 croniter < 0.4
-django ; python_version > '3.0'
+django < 2.2 ; python_version > '3.0'
+django < 2.0 ; python_version < '3.0'
 python-dateutil
 requests
 six
 
 # Test dependencies
 coverage
+pytest
+pytest-django
+pytest-cov
+
+mock
+sentry_sdk
+redis
