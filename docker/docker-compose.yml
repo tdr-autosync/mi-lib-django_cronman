@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  django-cronman:
+    container_name: cronman
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: cronman:v1
+    environment:
+      CRONMAN_REDIS_HOST: redis
+    volumes:
+      - ..:/application/cronman
+    depends_on:
+      - redis
+
+  redis:
+    image: redis
+    expose:
+      - 6379

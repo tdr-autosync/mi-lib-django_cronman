@@ -8,6 +8,8 @@ branches:
     - master
 cache:
   pip: true
+services:
+  - redis-server
 python:
   - "2.7"
   - "3.6"

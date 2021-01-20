@@ -17,7 +17,6 @@ from django.utils.encoding import force_text
 from django.utils.functional import cached_property
 
 from dateutil.parser import parse as dateutil_parse
-
 from six import text_type
 from six.moves import range  # pylint: disable=E0401, E0611
 
@@ -26,7 +25,7 @@ from cronman.config import app_settings
 MYPY = False
 if MYPY:
     # pylint: disable=unused-import
-    from typing import Union, Text, TypeVar
+    from typing import Text, TypeVar, Union
 
     T = TypeVar("T")
 

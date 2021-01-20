@@ -221,8 +221,7 @@ class CronUtilsTestCase(BaseCronTestCase):
         )
 
     def test_list_param_custom_default_and_replace(self):
-        """Test for `list_param` function - case: default and replace_map
-        """
+        """Test for `list_param` function - case: default and replace_map"""
         self.assertEqual(
             utils.list_param("", default=["default"]), ["default"]
         )
