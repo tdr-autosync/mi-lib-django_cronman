@@ -108,8 +108,7 @@ class CronitorTestCase(BaseCronTestCase):
         side_effect=requests.ConnectTimeout("msg"),
     )
     def test_complete_failed(self, mock_head):
-        """Test for `complete` method, case: Cronitor enabled, request failed
-        """
+        """Test for `complete` method, case: Cronitor enabled, request failed"""
         cronitor = Cronitor()
         cronitor.logger = mock.MagicMock()
         cronitor.complete("cRoNiD")
@@ -166,8 +165,7 @@ class CronitorTestCase(BaseCronTestCase):
         side_effect=requests.ConnectTimeout("msg"),
     )
     def test_fail_failed(self, mock_head):
-        """Test for `fail` method, case: Cronitor enabled, request failed
-        """
+        """Test for `fail` method, case: Cronitor enabled, request failed"""
         cronitor = Cronitor()
         cronitor.logger = mock.MagicMock()
         cronitor.fail("cRoNiD", msg="RuntimeError: test message")

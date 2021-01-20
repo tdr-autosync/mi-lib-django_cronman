@@ -1,10 +1,8 @@
 croniter < 0.4
-django < 2.0 ; python_version < '3.0'
 django ; python_version > '3.0'
 python-dateutil
 requests
 six
-typing ; python_version < '3.0'
 
 # Test dependencies
 coverage

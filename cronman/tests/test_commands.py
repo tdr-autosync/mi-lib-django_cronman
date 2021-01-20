@@ -604,8 +604,7 @@ class WorkerCommandTestCase(BaseCronTestCase):
 
     @override_cron_settings()
     def test_clean_all_files_active(self):
-        """Test for cleaning dead/stalled files - all files active, no deletion
-        """
+        """Test for cleaning dead/stalled files - all files active, no deletion"""
         pid_1, pid_2, pid_3 = 1001, 1002, 1003
         pid_file_1 = create_pid_file("ParamsLockedSleep:seconds=10", pid_1)
         pid_file_2 = create_pid_file("ClassLockedSleep:seconds=10", pid_2)

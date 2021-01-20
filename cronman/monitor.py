@@ -12,7 +12,6 @@ from django.utils.html import strip_tags
 from django.utils.http import urlencode
 
 import requests
-
 from six.moves.html_parser import HTMLParser
 
 from cronman.config import app_settings
