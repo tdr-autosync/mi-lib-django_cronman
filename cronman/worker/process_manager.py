@@ -10,7 +10,12 @@ import os
 import signal
 import subprocess
 
-from django.utils.encoding import force_text
+from django import VERSION
+
+if VERSION[0] >= 3:
+    from django.utils.encoding import force_str as force_text
+else:
+    from django.utils.encoding import force_text
 
 logger = logging.getLogger("cronman.command.cron_worker")
 

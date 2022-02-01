@@ -6,7 +6,13 @@ from __future__ import unicode_literals
 import hashlib
 import os
 
-from django.utils.encoding import force_bytes, force_text
+from django import VERSION
+
+if VERSION[0] >= 3:
+    from django.utils.encoding import force_str as force_text
+else:
+    from django.utils.encoding import force_text
+
 from django.utils.functional import cached_property
 
 from cronman.spawner import CronSpawner

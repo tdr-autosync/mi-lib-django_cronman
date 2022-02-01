@@ -13,7 +13,13 @@ import subprocess
 import sys
 from importlib import import_module
 
-from django.utils.encoding import force_text
+from django import VERSION
+
+if VERSION[0] >= 3:
+    from django.utils.encoding import force_str as force_text
+else:
+    from django.utils.encoding import force_text
+
 from django.utils.functional import cached_property
 
 from dateutil.parser import parse as dateutil_parse
