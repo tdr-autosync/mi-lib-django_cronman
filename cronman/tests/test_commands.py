@@ -9,7 +9,7 @@ import socket
 from django.conf import settings
 from django.core.management import CommandError, call_command
 
-import mock
+from unittest import mock
 import redis
 
 from cronman.config import app_settings

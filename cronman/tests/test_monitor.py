@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 
 from django.utils.encoding import force_bytes
 
-import mock
+from unittest import mock
 import requests
 
 from cronman.monitor import Cronitor, Slack
