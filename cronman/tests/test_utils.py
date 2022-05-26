@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 
 import os
 
-import mock
+from unittest import mock
 
 from cronman import utils
 from cronman.tests.base import TEST_CRONMAN_DATA_DIR, BaseCronTestCase

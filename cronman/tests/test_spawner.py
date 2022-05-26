@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 import errno
 import platform
 
-import mock
+from unittest import mock
 
 from cronman.spawner import CronSpawner
 from cronman.tests.base import (

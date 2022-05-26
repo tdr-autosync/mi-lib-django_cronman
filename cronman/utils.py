@@ -17,8 +17,6 @@ from django.utils.encoding import force_text
 from django.utils.functional import cached_property
 
 from dateutil.parser import parse as dateutil_parse
-from six import text_type
-from six.moves import range  # pylint: disable=E0401, E0611
 
 from cronman.config import app_settings
 
@@ -204,7 +202,7 @@ def list_param(
         else:
             result = []
             replace_map = replace_map or {}
-            cast = cast or text_type
+            cast = cast or str
             for item in re.split(delimiter, value):
                 if strip:
                     item = item.strip()
@@ -304,13 +302,11 @@ def execute_shell(command, command_args=None, **kwargs):
         if isinstance(command_args, dict):
             format_args = []
             format_kwargs = {
-                key: pipes.quote(text_type(value))
+                key: pipes.quote(str(value))
                 for key, value in command_args.items()
             }
         else:
-            format_args = [
-                pipes.quote(text_type(value)) for value in command_args
-            ]
+            format_args = [pipes.quote(str(value)) for value in command_args]
             format_kwargs = {}
         command = command.format(*format_args, **format_kwargs)
     kwargs["shell"] = True

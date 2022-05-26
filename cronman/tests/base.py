@@ -13,7 +13,7 @@ from django.test.testcases import TestCase
 from django.test.utils import override_settings
 from django.utils.encoding import force_bytes
 
-import mock
+from unittest import mock
 
 from cronman.config import app_settings
 from cronman.worker import CronWorker

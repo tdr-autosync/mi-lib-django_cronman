@@ -7,7 +7,7 @@ import datetime
 
 from django.utils import timezone
 
-import mock
+from unittest import mock
 
 from cronman.models import CronTask
 from cronman.taxonomies import CronTaskStatus

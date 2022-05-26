@@ -6,8 +6,6 @@ from __future__ import unicode_literals
 from django import forms
 from django.utils.functional import cached_property
 
-from six import text_type
-
 from cronman.job import cron_job_registry
 from cronman.models import CronTask
 from cronman.utils import cron_jobs_module_config, parse_params
@@ -42,7 +40,7 @@ class CronTaskAdminForm(forms.ModelForm):
         try:
             parse_params(params)
         except ValueError as e:
-            raise forms.ValidationError(text_type(e))
+            raise forms.ValidationError(str(e))
         return params
 
     def accept_cron_job_choice(self, name, cron_job_class):

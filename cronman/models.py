@@ -8,8 +8,7 @@ import datetime
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
-
-import six
+from django.utils import six
 
 from cronman.taxonomies import CronTaskStatus
 
