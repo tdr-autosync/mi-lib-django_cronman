@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 
 import datetime
 
-import mock
+from unittest import mock
 
 from cronman.exceptions import CronJobNotRegistered
 from cronman.scheduler import CronScheduler

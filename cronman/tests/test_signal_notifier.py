@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 
 import signal
 
-import mock
+from unittest import mock
 
 from cronman.tests.base import BaseCronTestCase
 from cronman.worker.signal_notifier import SignalNotifier
