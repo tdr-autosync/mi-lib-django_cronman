@@ -30,5 +30,6 @@ script:
   - coverage xml
   - |
     if [ $(python -V 2>&1 | grep -Po '(?<=Python )(\d\.\d+)') == "3.10" ]; then
+      echo $SONAR_TOKEN
       sonar-scanner -Dsonar.projectVersion=$(python ./setup.py --version) -X
     fi
