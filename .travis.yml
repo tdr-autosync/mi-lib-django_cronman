@@ -5,9 +5,7 @@ notifications:
   email: false
 addons:
   sonarcloud:
-    organization: unhaggle
-    token:
-       secure: DN3B9gET7ifTTWGiqyzj/lVud2PBBLUYZPSzIEku8Fd2UwdrcHck2JZhDCBuYgXyoR34Y/7HMUYrGq0kAXygBSUYpPiDa2R+G1gJUgIo7BfBvff2laBE+0J/EiPAwdAGTmgsRr00qCGlu0CfWgnrLEcCVBOeB6mtQeCRV0DgYi7A6Lb3Puuhbja9ZZ2UWSmcLVZFkVqDEEgvp4iCdjkkv2kTGEUv3VwjvJRTB6CqI9QZGxqzbAWXJnnuoGA0my2y1X5gUbteEVREg7ydYu4Dqyk9iL/lQbabZaRRVIVZoNj9P6kc+9YjLMUj8RdkKHNEnmZhs2k+PIVcTO5ejxO6nwJBk2nc7mb1bPxjVzJ9qaTlLVT9JlnOhKTDUG1PYCmc6CiE/1hbgjlCX7Qu7zLZ5ZzpZKxqnF9Wh1cP9vC4DCdQfL1gea63gX6pK/WxpQKpN+04LNLawuM4TMPGYT6fJdkoW08Wqdym8rrZ/ZAc5fDc+SawAiAaHDAasLQdjxpGGwxik5Jizerm2fpMRSCEZVbOpf161qxGqnsYV6Hcszpo1e98481nc69og1daSz78SOhhfuLqy3lAuuTmrk0VEaaYh68JVOppqLBjBKy+QVEoc4aO3NzyUgh9wLyu2132SPt8C5EiVpGXaTFIvn4lPplY0y0q7TnAya8OCtKz1Rc=
+    organization: "unhaggle"
 
 branches:
   only:
@@ -25,9 +23,10 @@ install:
   - pip install -U pip setuptools
   - pip install -r requirements.txt
 script:
+  - set -e
   - coverage run --source=cronman/ setup.py test
   - coverage xml
   - |
     if [ $(python -V 2>&1 | grep -Po '(?<=Python )(\d\.\d+)') == "3.10" ]; then
-      sonar-scanner -Dsonar.projectVersion=$(python ./setup.py --version) -X
+      sonar-scanner -Dsonar.projectVersion=$(python ./setup.py --version)
     fi
