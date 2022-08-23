@@ -7,7 +7,7 @@ addons:
   sonarcloud:
     organization: "unhaggle"
     token:
-      secure: "nnGmnBj+u72LZnbhM3xDasBHmqPH3U9Ew3DXaSrwVg1xdzbo3lvXi2maTitiqLQl1JBek9a99wSvdV9Rmx6NwrC23NbPxZzGhr888HYF9x7IqOc7eQalYZvi4D+8g7GLegHMkUpIEERzS6APfEHmF9hGctI0ZSyNw/GF1viT1nmPwIWtzio3rKidCsq8j3Mm0rL/7NgL36DqNd4Cek1d/0K0My9Rl05UIGD5S7aFc0lSJSmuyzz9/ISQobpOYgDo2gtrHGoo/wjh+FMtjD/kE0efNXS5r7kUYwYoJeXvaLWkKn1LLxWG43XLt2PlsYOMEagjbREv19uivGF923Sob9AJCHp0QUqFl6455GpsSR4qc5Xw+QmMHyNdTrM4tdaYMfVcIxWQz+IhI46XIZmsRlaLur6LZ5j3XA4pgY2LFBPJcFEw3Ohf/r8/URzzVBoyehu2oxSXsB/KT0pUc046RAS1rF5Pm2NsIgequOIEFveMgVXKyK7FLirY45Jr5wbotKL2vQqons8v/cuAgMFvYLflktrd9YnLvlVOFR88IB6ioHC8048M1BkceMyH3QlmjI+sa6jHo/29C2CZpzmJ15WANgHD3DteEqDKJFlfc+FD55uky91IJXITEOLS5jK30pXou+vKNiRjDfTvz4t9SkhF9nU0yo2RNO+pag3daZY="
+       secure: fupUGpi3SnAspzZUMJIA2r37vuVD6uw13mvyOxO1SSG2ZiHVDnew/1FFTqU1/7+3DlJno8Jw55O4Kvh/PBJ9XLn8dhjcp2iU3mO5lPR55ZIqrKDJsRKZkgJtA0kUKSxF6cdGh31xLF1RWSRUJSGm/VgUOoO4W32wmdr4QuUkwEFnPqS5sDXxlLE/yv80vRVZB+1k6B/KsSOWNOzLGAkgSOE4H0zzeZiwuI7srCKWya1Q5z8rhBiz+1f1ALVmWD5lcDR4+C88fJdIiyBLBaIMesx99Zg82TP+uIxKpKuDhkwbGukdJcbgQQBHxi+PNwd3eev77SOfzeKTThGAugNceIvGwTZIUiNkRsUnfiornPSt5DC6HLuA3Eyw8qPGw/PrfT9g02O7S7f8tAYIgNaUcXoMqM3X3b5zFKa1UulM7cF8ozpCDtoq5VvMO+GovsEnxsn+2n3zqEspzaQz39R1O8xZQM0sINPFSsuztKfL5JDwSbV2S3WbcF966IGM1s8q7QCEc/AyQR4iUehf3034cL5uzAKojM6z8lT+K1P3BOS826iwaBlpsbkHs+QwZgICnzxkZebk69I0zMNM6ufEe5u2SUMzd7f/0BhMK97FgYwMfQF0zOrJWnwG5o2ybVXOPdn1ZmwtjkjOn7RJCjpdBMXMx9tdpoYGHfWFQ5NjMFo=
 
 branches:
   only:
@@ -28,4 +28,7 @@ script:
   - set -e
   - coverage run --source=cronman/ setup.py test
   - coverage xml
-  - sonar-scanner
+  - |
+    if [ $(python -V 2>&1 | grep -Po '(?<=Python )(\d\.\d+)') == "3.10" ]; then
+      sonar-scanner -Dsonar.projectVersion=$(python ./setup.py --version)
+    fi
