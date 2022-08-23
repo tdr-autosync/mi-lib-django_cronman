@@ -3,6 +3,12 @@ dist: focal
 sudo: false
 notifications:
   email: false
+addons:
+  sonarcloud:
+    organization: "unhaggle"
+    token:
+      secure: "nnGmnBj+u72LZnbhM3xDasBHmqPH3U9Ew3DXaSrwVg1xdzbo3lvXi2maTitiqLQl1JBek9a99wSvdV9Rmx6NwrC23NbPxZzGhr888HYF9x7IqOc7eQalYZvi4D+8g7GLegHMkUpIEERzS6APfEHmF9hGctI0ZSyNw/GF1viT1nmPwIWtzio3rKidCsq8j3Mm0rL/7NgL36DqNd4Cek1d/0K0My9Rl05UIGD5S7aFc0lSJSmuyzz9/ISQobpOYgDo2gtrHGoo/wjh+FMtjD/kE0efNXS5r7kUYwYoJeXvaLWkKn1LLxWG43XLt2PlsYOMEagjbREv19uivGF923Sob9AJCHp0QUqFl6455GpsSR4qc5Xw+QmMHyNdTrM4tdaYMfVcIxWQz+IhI46XIZmsRlaLur6LZ5j3XA4pgY2LFBPJcFEw3Ohf/r8/URzzVBoyehu2oxSXsB/KT0pUc046RAS1rF5Pm2NsIgequOIEFveMgVXKyK7FLirY45Jr5wbotKL2vQqons8v/cuAgMFvYLflktrd9YnLvlVOFR88IB6ioHC8048M1BkceMyH3QlmjI+sa6jHo/29C2CZpzmJ15WANgHD3DteEqDKJFlfc+FD55uky91IJXITEOLS5jK30pXou+vKNiRjDfTvz4t9SkhF9nU0yo2RNO+pag3daZY="
+
 branches:
   only:
     - master
@@ -21,4 +27,5 @@ install:
 script:
   - set -e
   - coverage run --source=cronman/ setup.py test
-  - coverage report
+  - coverage xml
+  - sonar-scanner
