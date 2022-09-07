@@ -31,6 +31,10 @@ class CronTaskAdmin(admin.ModelAdmin):
     list_filter = ("status", "cron_job")
     max_num = 0
 
+    # Custom templates
+    change_form_template = "cronman/cron/cron_task/change_form.html"
+    change_list_template = "cronman/cron/cron_task/change_list.html"
+
     def save_model(self, request, obj, form, change):
         """Assign current user to the task"""
         obj.user = request.user
@@ -62,6 +66,16 @@ class CronTaskAdmin(admin.ModelAdmin):
         else:
             readonly_fields = []
         return readonly_fields
+
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        return super().change_view(
+            request, object_id, form_url, extra_context=extra_context,
+        )
+
+    def changelist_view(self, request, extra_context=None):
+        return super().changelist_view(
+            request, extra_context=extra_context,
+        )
 
 
 if admin_site:
