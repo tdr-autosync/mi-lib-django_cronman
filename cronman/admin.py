@@ -11,7 +11,6 @@ from cronman.forms import CronTaskAdminForm
 from cronman.models import CronTask
 
 admin_site_path = app_settings.CRONMAN_ADMIN_SITE
-
 admin_site = import_string(admin_site_path) if admin_site_path else None
 
 
@@ -32,8 +31,8 @@ class CronTaskAdmin(admin.ModelAdmin):
     max_num = 0
 
     # Custom templates
-    change_form_template = "cronman/cron/cron_task/change_form.html"
-    change_list_template = "cronman/cron/cron_task/change_list.html"
+    change_form_template = "admin/cronman/cron/cron_task/change_form.html"
+    change_list_template = "admin/cronman/cron/cron_task/change_list.html"
 
     def save_model(self, request, obj, form, change):
         """Assign current user to the task"""
