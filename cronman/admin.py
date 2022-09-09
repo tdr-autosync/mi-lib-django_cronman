@@ -67,16 +67,6 @@ class CronTaskAdmin(admin.ModelAdmin):
             readonly_fields = []
         return readonly_fields
 
-    def change_view(self, request, object_id, form_url='', extra_context=None):
-        return super().change_view(
-            request, object_id, form_url, extra_context=extra_context,
-        )
-
-    def changelist_view(self, request, extra_context=None):
-        return super().changelist_view(
-            request, extra_context=extra_context,
-        )
-
 
 if admin_site:
     admin_site.register(CronTask, CronTaskAdmin)
