@@ -19,7 +19,7 @@ class TestCronTaskAdmin:
         assert response.status_code == 200
 
     def test_changelist_view(self, admin_client):
-        """Test if InventoryAdmin change list view can be loaded."""
+        """Test if CronTaskAdmin change list view can be loaded."""
         url = reverse("admin:cronman_crontask_changelist")
         response = admin_client.get(url)
 
