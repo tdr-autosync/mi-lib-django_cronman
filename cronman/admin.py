@@ -11,6 +11,7 @@ from cronman.forms import CronTaskAdminForm
 from cronman.models import CronTask
 
 admin_site_path = app_settings.CRONMAN_ADMIN_SITE
+
 admin_site = import_string(admin_site_path) if admin_site_path else None
 
 
