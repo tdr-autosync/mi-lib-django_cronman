@@ -3,4 +3,4 @@ include README.md
 include LICENCE.txt
 
 # Include templates
-recursive-include django-cronman/cronman/templates *
+recursive-include cronman/templates *
