@@ -18,9 +18,21 @@ class TestCronTaskAdmin:
         response = admin_client.get(url)
         assert response.status_code == 200
 
+        loaded_template = response.templates[0]
+
+        assert (
+            loaded_template.name == "cronman/admin/cron_task/change_form.html"
+        )
+
     def test_changelist_view(self, admin_client):
         """Test if CronTaskAdmin change list view can be loaded."""
         url = reverse("admin:cronman_crontask_changelist")
         response = admin_client.get(url)
 
         assert response.status_code == 200
+
+        loaded_template = response.templates[0]
+
+        assert (
+            loaded_template.name == "cronman/admin/cron_task/change_list.html"
+        )
