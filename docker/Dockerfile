@@ -1,7 +1,7 @@
-FROM uhinfra/centos7-python:v19-3.6-psql10
+FROM uhinfra/bullseye:v2.0.3-py3.6-psql10-node12
 
 COPY . /application/cronman
-RUN source $HOME/.bashrc  && \
+RUN . $HOME/.bashrc  && \
     pip install -Ur /application/cronman/requirements.txt  && \
     pip install --no-deps -e /application/cronman
 
