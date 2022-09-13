@@ -1,38 +1,35 @@
-import pytest
-from django.contrib.admin.sites import AdminSite
 from django.urls import reverse
 
-from cronman.admin import CronTaskAdmin
-from cronman.models import CronTask
-
-pytestmark = [pytest.mark.django_db]
+from cronman.tests.base import BaseCronTestCase
 
 
-@pytest.mark.usefixtures("app1")
-class TestCronTaskAdmin:
+class TestCronTaskAdmin(BaseCronTestCase):
     """ Tests for CronTaskAdmin """
 
-    def test_change_view(self, admin_client):
+    def test_change_view(self):
         """Test if CronTaskAdmin change view can be loaded."""
         url = reverse("admin:cronman_crontask_change")
-        response = admin_client.get(url)
-        assert response.status_code == 200
+        response = self.admin_client().get(url)
+
+        self.assertEqual(response.status_code, 200)
 
         loaded_template = response.templates[0]
 
-        assert (
-            loaded_template.name == "cronman/admin/cron_task/change_form.html"
+        self.assertEqual(
+            loaded_template.name,
+            "cronman/admin/cron_task/change_form.html"
         )
 
-    def test_changelist_view(self, admin_client):
+    def test_changelist_view(self):
         """Test if CronTaskAdmin change list view can be loaded."""
         url = reverse("admin:cronman_crontask_changelist")
-        response = admin_client.get(url)
+        response = self.admin_client().get(url)
 
-        assert response.status_code == 200
+        self.assertEqual(response.status_code, 200)
 
         loaded_template = response.templates[0]
 
-        assert (
-            loaded_template.name == "cronman/admin/cron_task/change_list.html"
+        self.assertEqual(
+            loaded_template.name,
+            "cronman/admin/cron_task/change_list.html"
         )

@@ -9,10 +9,11 @@ import os
 import shutil
 import signal
 
+from django.contrib.auth import get_user_model
+from django.test.client import Client
 from django.test.testcases import TestCase
 from django.test.utils import override_settings
 from django.utils.encoding import force_bytes
-
 from unittest import mock
 
 from cronman.config import app_settings
@@ -156,3 +157,29 @@ class BaseCronTestCase(TestCase):
         with open(TEMP_FILE, "r") as file_:
             lines = [line.strip() for line in file_.readlines()]
         self.assertIn(message, lines)
+
+    def admin_client(self) -> "django.test.client.Client":
+        """A Django test client logged in as an admin user."""
+
+        UserModel = get_user_model()
+        username_field = get_user_model().USERNAME_FIELD
+        username = "admin@example.com" if username_field == "email" else "admin"
+
+        try:
+            # The default behavior of `get_by_natural_key()` is to look up by
+            # `username_field`. However the user model is free to override it
+            # with any sort of custom behavior. The Django authentication
+            # backend already assumes the lookup is by username, so we can
+            # assume so as well.
+            user = UserModel._default_manager.get_by_natural_key(username)
+        except UserModel.DoesNotExist:
+            user_data = {}
+            if "email" in UserModel.REQUIRED_FIELDS:
+                user_data["email"] = "admin@example.com"
+            user_data["password"] = "password"
+            user_data[username_field] = username
+            user = UserModel._default_manager.create_superuser(**user_data)
+
+        client = Client()
+        client.force_login(user)
+        return client

@@ -44,7 +44,7 @@ USE_I18N = True
 
 LANGUAGE_CODE = "en"
 
-# ROOT_URLCONF = "cronman.tests.urls"
+ROOT_URLCONF = "cronman.tests.urls"
 
 _log_level = os.environ.get("TEST_CRONMAN_LOG_LEVEL", "INFO")
 

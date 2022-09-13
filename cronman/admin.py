@@ -32,18 +32,15 @@ class CronTaskAdmin(admin.ModelAdmin):
     max_num = 0
 
     # Custom templates
-
     change_form_template = "cronman/admin/cron_task/change_form.html"
     change_list_template = "cronman/admin/cron_task/change_list.html"
-    print(change_form_template)
-    print(change_list_template)
 
     def save_model(self, request, obj, form, change):
         """Assign current user to the task"""
         obj.user = request.user
         return super(CronTaskAdmin, self).save_model(
             request, obj, form, change
-        ) 
+        )
 
     def get_fields(self, request, obj=None):
         """Fields: all fields on "edition", editable fields on addition"""
