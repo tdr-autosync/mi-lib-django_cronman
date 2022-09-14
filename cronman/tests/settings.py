@@ -19,13 +19,14 @@ INSTALLED_APPS = (
     "django.contrib.contenttypes",
     "django.contrib.auth",
     "django.contrib.admin",
+    "django.contrib.sessions",
     "cronman",
 )
 
 MIDDLEWARE = (
+    "django.contrib.sessions.middleware.SessionMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
 )
 
 TEMPLATES = [
@@ -35,6 +36,8 @@ TEMPLATES = [
             "context_processors": [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "django.template.loaders.filesystem.Loader",
+                "django.template.loaders.app_directories.Loader",
             ],
         },
     },
@@ -44,7 +47,7 @@ USE_I18N = True
 
 LANGUAGE_CODE = "en"
 
-# ROOT_URLCONF = "cronman.tests.urls"
+ROOT_URLCONF = "cronman.tests.urls"
 
 _log_level = os.environ.get("TEST_CRONMAN_LOG_LEVEL", "INFO")
 
