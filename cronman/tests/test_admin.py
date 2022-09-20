@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# vi:si:et:sw=4:sts=4:ts=4
+
 import datetime
 
 from django.urls import reverse
@@ -12,17 +15,12 @@ class TestCronTaskAdmin(BaseCronTestCase):
 
     def test_change_view(self):
         """Test if CronTaskAdmin change view can be loaded."""
-        # Started Task:
-        # pid_s1 = 1001
         cron_task = CronTask.objects.run_now(
             "Sleep", now=timezone.now() - datetime.timedelta(minutes=6)
         )[0]
 
         url = reverse("admin:cronman_crontask_change", args=[cron_task.id])
-        print(f"=====> {url}")
         response = self.admin_client().get(url)
-        print(f"=====> {response}")
-
 
         self.assertEqual(response.status_code, 200)
 

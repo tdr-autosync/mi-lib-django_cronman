@@ -1,16 +1,10 @@
+# -*- coding: utf-8 -*-
+# vi:si:et:sw=4:sts=4:ts=4
+
 """Test project URLs."""
 from django.conf.urls import url
 from django.contrib import admin
-from django.urls import include, path
-
-#
-# from rest_framework.routers import SimpleRouter
-#
-#
-# router = SimpleRouter()
 
 urlpatterns = [
     url('admin/', admin.site.urls),
 ]
-
-print(f"=====> {urlpatterns}")
