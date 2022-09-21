@@ -3,13 +3,21 @@
 
 import datetime
 
+from django.conf.urls import url
+from django.contrib import admin
+from django.test.utils import override_settings
 from django.urls import reverse
 from django.utils import timezone
-
 from cronman.models import CronTask
 from cronman.tests.base import BaseCronTestCase
 
 
+urlpatterns = [
+    url('admin/', admin.site.urls),
+]
+
+
+@override_settings(ROOT_URLCONF=__name__)
 class TestCronTaskAdmin(BaseCronTestCase):
     """ Tests for CronTaskAdmin """
 
