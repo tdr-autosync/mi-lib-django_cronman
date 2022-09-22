@@ -1,3 +1,6 @@
 # Include the README and LICENCE files
 include README.md
 include LICENCE.txt
+
+# Include templates
+recursive-include cronman/templates *
