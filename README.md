@@ -268,12 +268,13 @@ Cron job `RunCronTasks` started every 4 minutes by the scheduler will spawn a se
 
 ## Changelog
 
-2021-xx-xx - 3.0.0 Drop Python2 compatibility
+* 2022-06-27 - 3.1.0 Add support to Python 3.10
+* 2021-xx-xx - 3.0.0 Drop Python2 compatibility
                    FIX "cron_remote_manager disable ALL".
-2020-05-25 - 2.1.0 Python 3 + Django 2 compatibility.
-2020-04-30 - 2.0.1 Fix for sentry-sdk.
-2020-04-23 - 2.0.0 Replace raven with sentry-sdk.
-2020-01-09 - 1.2.0 Django 2 compatibility.
-2019-04-30 - 1.1.1 Pre-commit.com hooks support. Docs update
-2019-03-13 - 1.1.0 Add support for cronitor ping for cron_scheduler
-2019-02-25 - 1.0.0 Initial version released
+* 2020-05-25 - 2.1.0 Python 3 + Django 2 compatibility.
+* 2020-04-30 - 2.0.1 Fix for sentry-sdk.
+* 2020-04-23 - 2.0.0 Replace raven with sentry-sdk.
+* 2020-01-09 - 1.2.0 Django 2 compatibility.
+* 2019-04-30 - 1.1.1 Pre-commit.com hooks support. Docs update
+* 2019-03-13 - 1.1.0 Add support for cronitor ping for cron_scheduler
+* 2019-02-25 - 1.0.0 Initial version released

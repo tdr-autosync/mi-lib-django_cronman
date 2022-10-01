@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 
 import platform
 
-import mock
+from unittest import mock
 
 from cronman.exceptions import CronWorkerInvalidParams
 from cronman.models import CronTask
