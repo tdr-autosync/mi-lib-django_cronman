@@ -9,9 +9,9 @@ import os
 from django import VERSION
 
 if VERSION[0] >= 3:
-    from django.utils.encoding import force_str as force_text
+    from django.utils.encoding import force_str as force_text, force_bytes
 else:
-    from django.utils.encoding import force_text
+    from django.utils.encoding import force_text, force_bytes
 
 from django.utils.functional import cached_property
 
