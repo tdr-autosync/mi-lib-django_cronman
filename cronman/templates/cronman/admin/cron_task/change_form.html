@@ -1,0 +1,17 @@
+{% extends 'admin/change_form.html' %}
+{% block extrahead %}
+  {{ block.super }}
+  <style type="text/css">
+    div.breadcrumbs {
+        word-break: break-word;
+    }
+
+    .form-row {
+        word-break: break-word;
+    }
+
+    ul.messagelist li {
+        word-break: break-word;
+    }
+  </style>
+{% endblock %}

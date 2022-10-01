@@ -9,8 +9,6 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
-import six
-
 from cronman.taxonomies import CronTaskStatus
 
 
@@ -62,7 +60,6 @@ class CronTaskManager(models.Manager.from_queryset(CronTaskQuerySet)):
         return cron_task, created
 
 
-@six.python_2_unicode_compatible
 class CronTask(models.Model):
     """Cron Task: a cron job execution request"""
 

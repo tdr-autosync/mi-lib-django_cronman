@@ -1,8 +1,12 @@
 language: python
-dist: xenial
+dist: focal 
 sudo: false
 notifications:
   email: false
+addons:
+  sonarcloud:
+    organization: "unhaggle"
+
 branches:
   only:
     - master
@@ -14,10 +18,15 @@ python:
   - "3.6"
   - "3.7"
   - "3.8"
+  - "3.10"
 install:
   - pip install -U pip setuptools
   - pip install -r requirements.txt
 script:
   - set -e
   - coverage run --source=cronman/ setup.py test
-  - coverage report
+  - coverage xml
+  - |
+    if [ $(python -V 2>&1 | grep -Po '(?<=Python )(\d\.\d+)') == "3.10" ]; then
+      sonar-scanner -Dsonar.projectVersion=$(python ./setup.py --version)
+    fi

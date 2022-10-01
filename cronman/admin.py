@@ -31,6 +31,10 @@ class CronTaskAdmin(admin.ModelAdmin):
     list_filter = ("status", "cron_job")
     max_num = 0
 
+    # Custom templates
+    change_form_template = "cronman/admin/cron_task/change_form.html"
+    change_list_template = "cronman/admin/cron_task/change_list.html"
+
     def save_model(self, request, obj, form, change):
         """Assign current user to the task"""
         obj.user = request.user
