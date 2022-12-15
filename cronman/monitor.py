@@ -157,7 +157,7 @@ class Slack(object):
                 "or disable Slack integration (CRONMAN_SLACK_ENABLED = False)."
             )
         headers = {
-            'Content-type': 'application/json; charset=utf-8',
+            'Content-type': 'application/json;charset=utf-8',
             'Authentication': f'Bearer {self.token}'
         }
         # prepare message

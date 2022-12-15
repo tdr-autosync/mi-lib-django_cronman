@@ -218,10 +218,10 @@ class SlackTestCase(BaseCronTestCase):
         slack.logger = mock.MagicMock()
         slack.post("This is a test!")
         mock_post.assert_called_once_with(
-            "https://fake-chat.slack.com/services/hooks/slackbot?"
-            "token=sLaCkTokEn&channel=%23cronitor",
-            data=force_bytes("This is a test!"),
+            "https://fake-chat.slack.com/services/hooks/slackbot",
+            json={"text": "This is a test!", "channel":"cronitor"},
             timeout=7,
+            headers={'Content-type': 'application/json;charset=utf-8', 'Authentication': "Bearer sLaCkTokEn"}
         )
 
     @override_cron_settings(
@@ -237,10 +237,10 @@ class SlackTestCase(BaseCronTestCase):
         slack.logger = mock.MagicMock()
         slack.post("This is a test!", channel="dev")
         mock_post.assert_called_once_with(
-            "https://fake-chat.slack.com/services/hooks/slackbot?"
-            "token=sLaCkTokEn&channel=%23dev",
-            data=force_bytes("This is a test!"),
+            "https://fake-chat.slack.com/services/hooks/slackbot",
+            json={"text": "This is a test!", "channel":"dev"},
             timeout=7,
+            headers={'Content-type': 'application/json;charset=utf-8', 'Authentication': "Bearer sLaCkTokEn"}
         )
 
     @override_cron_settings(
@@ -259,10 +259,10 @@ class SlackTestCase(BaseCronTestCase):
         slack.logger = mock.MagicMock()
         slack.post("This is a test!")
         mock_post.assert_called_once_with(
-            "https://fake-chat.slack.com/services/hooks/slackbot?"
-            "token=sLaCkTokEn&channel=%23cronitor",
-            data=force_bytes("This is a test!"),
+            "https://fake-chat.slack.com/services/hooks/slackbot",
+            json={"text": "This is a test!", "channel":"cronitor"},
             timeout=7,
+            headers={'Content-type': 'application/json;charset=utf-8', 'Authentication': "Bearer sLaCkTokEn"}
         )
         slack.logger.error.assert_has_calls(
             [mock.call("Slack request failed: ConnectTimeout: msg")]
