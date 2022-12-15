@@ -219,7 +219,7 @@ class SlackTestCase(BaseCronTestCase):
         slack.post("This is a test!")
         mock_post.assert_called_once_with(
             "https://fake-chat.slack.com/services/hooks/slackbot",
-            json={"text": "This is a test!", "channel":"cronitor"},
+            json={"text": b"This is a test!", "channel":"cronitor"},
             timeout=7,
             headers={'Content-type': 'application/json;charset=utf-8', 'Authentication': "Bearer sLaCkTokEn"}
         )
@@ -238,7 +238,7 @@ class SlackTestCase(BaseCronTestCase):
         slack.post("This is a test!", channel="dev")
         mock_post.assert_called_once_with(
             "https://fake-chat.slack.com/services/hooks/slackbot",
-            json={"text": "This is a test!", "channel":"dev"},
+            json={"text": b"This is a test!", "channel":"dev"},
             timeout=7,
             headers={'Content-type': 'application/json;charset=utf-8', 'Authentication': "Bearer sLaCkTokEn"}
         )
@@ -260,7 +260,7 @@ class SlackTestCase(BaseCronTestCase):
         slack.post("This is a test!")
         mock_post.assert_called_once_with(
             "https://fake-chat.slack.com/services/hooks/slackbot",
-            json={"text": "This is a test!", "channel":"cronitor"},
+            json={"text": b"This is a test!", "channel":"cronitor"},
             timeout=7,
             headers={'Content-type': 'application/json;charset=utf-8', 'Authentication': "Bearer sLaCkTokEn"}
         )
