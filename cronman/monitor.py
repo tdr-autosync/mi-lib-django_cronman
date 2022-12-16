@@ -158,7 +158,7 @@ class Slack(object):
             )
         headers = {
             'Content-type': 'application/json;charset=utf-8',
-            'Authentication': f'Bearer {self.token}'
+            'Authorization': f'Bearer {self.token}'
         }
         # prepare message
         message = self._prepare_message(message)

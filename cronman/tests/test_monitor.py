@@ -221,7 +221,7 @@ class SlackTestCase(BaseCronTestCase):
             "https://fake-chat.slack.com/services/hooks/slackbot",
             json={"text": b"This is a test!", "channel":"cronitor"},
             timeout=7,
-            headers={'Content-type': 'application/json;charset=utf-8', 'Authentication': "Bearer sLaCkTokEn"}
+            headers={'Content-type': 'application/json;charset=utf-8', 'Authorization': "Bearer sLaCkTokEn"}
         )
 
     @override_cron_settings(
@@ -240,7 +240,7 @@ class SlackTestCase(BaseCronTestCase):
             "https://fake-chat.slack.com/services/hooks/slackbot",
             json={"text": b"This is a test!", "channel":"dev"},
             timeout=7,
-            headers={'Content-type': 'application/json;charset=utf-8', 'Authentication': "Bearer sLaCkTokEn"}
+            headers={'Content-type': 'application/json;charset=utf-8', 'Authorization': "Bearer sLaCkTokEn"}
         )
 
     @override_cron_settings(
@@ -262,7 +262,7 @@ class SlackTestCase(BaseCronTestCase):
             "https://fake-chat.slack.com/services/hooks/slackbot",
             json={"text": b"This is a test!", "channel":"cronitor"},
             timeout=7,
-            headers={'Content-type': 'application/json;charset=utf-8', 'Authentication': "Bearer sLaCkTokEn"}
+            headers={'Content-type': 'application/json;charset=utf-8', 'Authorization': "Bearer sLaCkTokEn"}
         )
         slack.logger.error.assert_has_calls(
             [mock.call("Slack request failed: ConnectTimeout: msg")]
