@@ -156,15 +156,10 @@ class Slack(object):
                 "Slack integration. Please provide values for these settings "
                 "or disable Slack integration (CRONMAN_SLACK_ENABLED = False)."
             )
-        channel_url = "{}?{}".format(
-            self.url,
-            urlencode(
-                (
-                    ("token", self.token),
-                    ("channel", "#{}".format(channel or self.default_channel)),
-                )
-            ),
-        )
+        headers = {
+            'Content-type': 'application/json;charset=utf-8',
+            'Authorization': f'Bearer {self.token}'
+        }
         # prepare message
         message = self._prepare_message(message)
 
@@ -179,8 +174,12 @@ class Slack(object):
                 # you don't get to choose. All data should be encoded
                 # manually by the user before it's passed to requests.
                 encoded_chunk = chunk.encode("utf-8")
+                data = {
+                    'text': encoded_chunk,
+                    'channel': channel or self.default_channel
+                }
                 response = requests.post(
-                    channel_url, data=encoded_chunk, timeout=7
+                    self.url, json=data, timeout=7, headers=headers
                 )
                 response.raise_for_status()
         except Exception as error:
