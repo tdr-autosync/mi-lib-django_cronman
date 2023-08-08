@@ -1,4 +1,4 @@
-FROM uhinfra/bullseye:v2.0.3-py3.6-psql10-node12
+FROM 050946403637.dkr.ecr.ca-central-1.amazonaws.com/mi-infra-bullseye_slim:v1.0.0-py3.6-psql15 AS venv
 
 COPY . /application/cronman
 RUN . $HOME/.bashrc  && \
