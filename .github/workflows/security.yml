@@ -21,24 +21,10 @@ jobs:
           python-version: '3.6'
           cache: 'pip'
 
-      - name: Install dependencies
-        env:
-          GITHUB_USER: ${{ vars.AS__GITHUB_USER }}
-          GITHUB_TOKEN: ${{ secrets.AS__GITHUB_TOKEN }}
-        run: |
-          python -m pip install --upgrade pip coverage
-          pip install -r requirements.txt
-
       - name: Veracode Agent Based Scan
         env:
           SRCCLR_API_TOKEN: ${{ secrets.AS__VERACODE_AGENT_TOKEN }}
-          GITHUB_USER: ${{ vars.AS__GITHUB_USER }}
-          GITHUB_TOKEN: ${{ secrets.AS__GITHUB_TOKEN }}
         uses: veracode/veracode-sca@v2.1.12
-        with:
-          github_token: $${{ secrets.AS__GITHUB_TOKEN }}
-          create-issues: false
-          allow-dirty: true
 
       - name: Veracode (create zip)
         run: zip -r src.zip . -x ".git/*" ".github/*" ".env*"
