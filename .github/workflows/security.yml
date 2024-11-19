@@ -1,0 +1,40 @@
+name: security-check
+
+on:
+  push:
+    branches:
+      - master
+      - sicurezza
+
+jobs:
+  veracode:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.6'
+          cache: 'pip'
+
+      - name: Veracode Agent Based Scan
+        env:
+          SRCCLR_API_TOKEN: ${{ secrets.AS__VERACODE_AGENT_TOKEN }}
+        uses: veracode/veracode-sca@v2.1.12
+
+      - name: Veracode (create zip)
+        run: zip -r src.zip . -x ".git/*" ".github/*" ".env*"
+
+      - name: Veracode Upload and Scan
+        uses: veracode/veracode-uploadandscan-action@0.2.7
+        with:
+          appname: '${{ github.repository }}'
+          version: '${{ github.head_ref || github.ref_name }} - ${{ github.sha }}'
+          filepath: './src.zip'
+          vid: '${{ secrets.AS__VERACODE_API_ID }}'
+          vkey: '${{ secrets.AS__VERACODE_API_KEY }}'
+          scanallnonfataltoplevelmodules: true
